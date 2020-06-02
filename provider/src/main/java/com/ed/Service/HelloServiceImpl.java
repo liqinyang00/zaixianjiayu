@@ -10,7 +10,6 @@ public class HelloServiceImpl implements HelloService {
     @RequestMapping("/")
     @Override
     public String hello() {
-
-        return "成功";
+        return "chenggong";
     }
 }

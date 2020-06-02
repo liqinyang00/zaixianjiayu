@@ -7,4 +7,7 @@ public class Tree {
 
     private Integer id;
     private  String name;
+
+    private String password;
+
 }

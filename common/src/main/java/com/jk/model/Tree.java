@@ -6,7 +6,9 @@ import lombok.Data;
 public class Tree {
 
     private Integer id;
+
     private  String name;
+    private  String number;
 
     private String password;
 

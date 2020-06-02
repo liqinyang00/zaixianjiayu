@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Metas -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="" />
+    <!-- Links -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/icofont.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/slick.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Document Title -->
+    <meta charset="utf-8">
+    <title>慕课网-程序员的梦工厂</title>
+    <style type="text/css">
+        #header .page-container {
+            width: auto;
+            padding-right: 10px;
+            z-index: 900;
+            box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
+            position: relative;
+        }
+        ul{
+            width: 2000px;
+            height: 40px;
+        }
+        li{
+            list-style-type: none;
+            float: left;
+            line-height: 80px;
+            font-size: 16px;
+            color: #343a40;
+            margin-right:40px;
+        }
+        a{
+            display: block;
+            font-family: "微软雅黑 Light";
+            margin: 0px 0px;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* 轮播图容器 */
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;       /*设置为相对定位，以让子元素相对它进行绝对定位*/
+            margin: 0 auto;           /*居中*/
+        }
+        .slide {
+            display: none;     /*默认为不显示*/
+        }
+        .slide img {
+            width: 100%;     /*宽度最大不超过父元素（轮播容器）*/
+        }
+        .slideIndex {        /*设置页标样式*/
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+        /* 前进 & 后退 */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;    /*在轮播容器内绝对定位*/
+            top: 50%;              /*在垂直方向调到中间*/
+            margin-top: -22px;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease; /*加入动画特效*/
+        }
+        .prev {
+            left: 160px;
+            border-radius: 0 3px 3px 0;
+        }
+        .next {
+            right: 160px;
+            border-radius: 3px 0 0 3px;
+        }
+        /*当鼠标Hover时，背景色改变，提升用户体验*/
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+        .dotGroup {
+            text-align: center;      /*使按钮组居中*/
+            position: relative;      /*使其脱离文档流，不会被图片挡住*/
+            margin-top: -30px;       /*向上移，使其出现在在图片底端位置*/
+        }
+        .dot {
+            cursor:pointer;
+            height: 13px;
+            width: 13px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color:#A6A6A6;
+            font-size:16px;
+            font-family: "微软雅黑 Light";
+        }
+
+        .dropdown ul{
+             display:none;
+             text-align:center;
+             background:#fff;
+             border:1px solid #ddd;
+             width:150px;
+             height: 55px;
+             margin-left:-10px;
+         }
+        .dropdown ul li{
+            text-align: center;
+            margin-top: -12px;
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <a href="#"><img src="/images/top.jpg" style="width: 2000px" alt=""></a>
+</div>
+
+<div id="header">
+    <div class="page-container clearfix" id="nav"  style="background-color: #fff !important;">
+
+        <ul class=daohang>
+            <li><a href="/" target="_self" title="首页"><img title="慕课网" src="images/logo.jpg"></a></li>
+            <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">免费课程</a></li>
+            <li style="margin-top: 5px"><a href="/toShiZhanKeCheng">实战课程</a></li>
+            <li style="margin-top: 5px"><a href="/toKingZhiWei">金职位</a></li>
+            <li style="margin-top: 5px"><a href="/toWIKI">wiki</a></li>
+            <li style="margin-top: 5px"><a href="">专栏</a></li>
+            <li style="margin-top: 5px"><a href="">手记</a></li>
+            <li style="margin-top: 5px">
+                <input type="text" style="width: 260px; height: 45px; border: 12px solid #E9E9E9; background-color:#E9E9E9; border-radius: 8px; color: #4d5559"  placeholder="&nbsp;&nbsp;请输入关键字...">
+            </li>
+            <li style="margin-top: 2px; margin-left: -110px"><a href="#"><img src="images/search.jpg"></a></li>
+            <li style="margin-top: 5px">
+                <a href="/toShoppingCart">
+                    <img src="images/gouwu1.jpg" style="margin-top: -2px"/>
+                    <span>购物车</span>
+                </a>
+            </li>
+            <!--<li style="margin-top: 35px">
+                <div class="wrapper">
+                    <div class="fir">
+                        <div class="dropdown">
+                            <h5><shiro:principal property="username" /></h5>
+                            <ul class="list">
+                                <li><a href="../logout" >安全退出</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>-->
+            <li style="margin-top: 5px"><label th:if="${session.value!=null}">
+                <a href="/toOrder">欢迎：<label style="color: red" th:text="${session.value}"></label></a>
+            </label></li>
+            <li style="margin-top: 5px"><label th:if="${session.value==null}">
+                <a href="/toLogin">登录/</a>
+            </label></li>
+            <!-- <li style="margin-top: 5px"><a href="/toLogin">登录&nbsp;&nbsp;/</a></li>-->
+            <li style="margin-top: 5px;margin-left: -40px">
+                <a href="/log">注销</a>
+            </li>
+
+        </ul>
+    </div>
+</div><br><br><br><br><br>
+
+<div class="slideshow-container" style="margin-top: -80px"> <!-- 轮播容器开始 -->
+    <!-- 轮播页面 -->
+    <div class="slide">
+        <div class="slideIndex"></div> <!-- 展示页码 -->
+        <a href="toXiangQing1"><img src="images/5e7dca9f00019ffc16000652.jpg"></a>           <!-- 轮播图片 -->
+    </div>
+    <!-- 轮播页面 -->
+    <div class="slide">
+        <div class="slideIndex"></div> <!-- 展示页码 -->
+        <a href="toXiangQing2"><img src="images/5e7dca46000182c718720764.jpg"></a>           <!-- 轮播图片 -->
+    </div>
+    <!-- 轮播页面 -->
+    <div class="slide">
+        <div class="slideIndex"></div> <!-- 展示页码 -->
+        <a href="toXiangQing1"><img src="images/5e93cfe00001d27c18720764.jpg"></a>           <!-- 轮播图片 -->
+    </div>
+    <!-- 轮播页面 -->
+    <div class="slide">
+        <div class="slideIndex"></div> <!-- 展示页码 -->
+        <a href="toXiangQing2"><img src="images/5e683f6f00012ec118720764.jpg"></a>           <!-- 轮播图片 -->
+    </div>
+    <!-- 轮播页面 -->
+    <div class="slide">
+        <div class="slideIndex"></div> <!-- 展示页码 -->
+        <a href="toXiangQing1"><img src="images/5e74787600018d4218720764.jpg"></a>           <!-- 轮播图片 -->
+    </div>
+</div> <!-- 轮播容器结束 -->
+
+<!-- 前翻页，后翻页按钮 -->
+<a class="prev" id="slideShowPrev">&#10094;</a>
+<!-- &#10094 为特殊Unicode字符 -->
+<a class="next" id="slideShowNext">&#10095;</a>
+<!-- &#10095 为特殊Unicode字符 -->
+
+<!-- 圆点坐标按钮组 -->
+<div class="dotGroup">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+</div>
+
+
+<div align="center" style="margin-top: 70px">
+    <img src="/images/main1.jpg" style="width: 1200px" alt="">
+</div>
+
+<section id="about-us" class="services">
+    <div class="container-fluid">
+        <div class="side-img">
+            <img src="images/aside.svg" alt="">
+        </div>
+        <div class="side2-img">
+            <img src="images/aside2.svg" alt="">
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4" style="margin-left: -50px">
+                    <div class="service-box">
+                        <img src="images/service-icon1.svg" alt="">
+                        <img src="images/appload.png" alt="">
+                        <h3>安装慕课网APP<br>下载教程随时学</h3>
+                        <p>顶尖公司 实力大牛</p>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4" style="margin-left: 20px">
+                    <div class="service-box">
+                        <img src="images/service-icon2.svg" alt="">
+                        <img src="images/appload.png" alt="">
+                        <h3>扫二维码关注慕<br>课网微信公众号</h3>
+                        <p>贴近工作 海量课程</p>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4" style="margin-left: 20px">
+                    <div class="service-box">
+                        <img src="images/service-icon1.svg" alt="">
+                        <img src="images/appload.png" alt="">
+                        <h3>慕课网APP<br>随时随地学编程</h3>
+                        <p>随时随地 离线学习</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div align="center" style="margin-top: 40px">
+    <a href="/toShiZhanKeCheng"><img src="/images/777.jpg" style="width: 1200px" alt=""></a>
+</div><br><br><br><br><br><br><br><br>
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-lg-6">
+                <img src="images/aboutimg.svg" alt="">
+            </div>
+            <div class="col-12 col-sm-12 col-lg-6">
+                <h2>Some About Us</h2>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;慕课网是垂直的互联网IT技能免费学习网站。以独家视频教程、在线编程工具、学习计划、问答社区为核心特色。在这里，你可以找到最好的互联网技术牛人，也可以通过免费的在线公开视频课程学习国内领先的互联网IT技术。<br>
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;慕课网课程涵盖前端开发、PHP、Html5、Android、iOS、Swift等IT前沿技术语言，包括基础课程、实用案例、高级分享三大类型，适合不同阶段的学习人群。以纯干货、短视频的形式为平台特点，为在校学生、职场白领提供了一个迅速提升技能、共同分享进步的学习平台。</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="portfolio" class="portfolio">
+    <div class="container-fluid">
+        <div class="portfolio-aside">
+            <img src="images/aside3.svg" alt="">
+        </div>
+        <div class="container" style="margin-top: -70px">
+            <div class="row">
+                <div class="col-12">
+                    <h2>实战课程</h2>
+                    <h4>— 战以学 学为战</h4>
+                </div>
+            </div><br><br>
+            <div class="row">
+                <div class="col-12 col-lg-4 work-box">
+                    <div class="photobox photobox_type10">
+                        <div class="photobox__previewbox">
+                            <img src="images/qq.jpg" class="photobox__preview" alt="Preview">
+                            <span class="photobox__label">2020 重学C++ 重构你的C++知识体系</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 work-box">
+                    <div class="photobox photobox_type10">
+                        <div class="photobox__previewbox">
+                            <img src="images/ww.jpg" class="photobox__preview" alt="Preview">
+                            <span class="photobox__label">编程必备基础-音视频小白系统入门课</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 work-box">
+                    <div class="photobox photobox_type10">
+                        <div class="photobox__previewbox">
+                            <img src="images/ee.jpg" class="photobox__preview" alt="Preview">
+                            <span class="photobox__label">算法与数据结构-综合提升 C++版</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-4 work-box">
+                    <div class="photobox photobox_type10">
+                        <div class="photobox__previewbox">
+                            <img src="images/r.jpg" class="photobox__preview" alt="Preview">
+                            <span class="photobox__label">Typescript + React 高仿 Antd 从零到一打造自己的组件库</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 work-box">
+                    <div class="photobox photobox_type10">
+                        <div class="photobox__previewbox">
+                            <img src="images/t.jpg" class="photobox__preview" alt="Preview">
+                            <span class="photobox__label">基于Spark2.x，聚焦算法原理，开发企业级个性化推荐系统</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 work-box">
+                    <div class="photobox photobox_type10">
+                        <div class="photobox__previewbox">
+                            <img src="images/y.jpg" class="photobox__preview" alt="Preview">
+                            <span class="photobox__label">Java主流技术栈SSM+SpringBoot商铺系统</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="hiden-gallery" class="hide">
+                <div class="row">
+                    <div class="col-12 col-lg-4 work-box">
+                        <div class="photobox photobox_type10">
+                            <div class="photobox__previewbox">
+                                <img src="images/q.jpg" class="photobox__preview" alt="Preview">
+                                <span class="photobox__label">大学计算机必修课新讲编译原理+操作系统+图形学</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 work-box">
+                        <div class="photobox photobox_type10">
+                            <div class="photobox__previewbox">
+                                <img src="images/w.jpg" class="photobox__preview" alt="Preview">
+                                <span class="photobox__label">Spring Cloud + Vue 前后端分离 开发企业级在线视频课程系统</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 work-box">
+                        <div class="photobox photobox_type10">
+                            <div class="photobox__previewbox">
+                                <img src="images/e.jpg" class="photobox__preview" alt="Preview">
+                                <span class="photobox__label">ReactNative+TypeScript仿喜马拉雅开发App</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 more-btn">
+                    <a class="more-btn-inside">查看更多.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="blog" class="blog">
+    <div class="container-fluid">
+        <div class="blog-aside">
+            <img src="images/aside4.svg" alt="">
+        </div>
+        <div class="container" style="margin-top: -120px">
+            <div class="row">
+                <div class="col-12">
+                    <h2>专栏</h2>
+                    <h4>— 实用的知识手册</h4>
+                </div>
+            </div><br><br>
+            <div id="blog-drag" class="row blog-slider">
+                <div class="col-12 col-lg-4 blog-box">
+                    <img src="images/1st.jpg" class="photobox__preview" alt="Preview"><br><br><br><br>
+                    <img src="images/2st.jpg" class="photobox__preview" alt="Preview">
+                </div>
+                <div class="col-12 col-lg-4 blog-box">
+                    <img src="images/3st.jpg" class="photobox__preview" alt="Preview"><br><br><br><br>
+                    <img src="images/4st.jpg" class="photobox__preview" alt="Preview">
+                </div>
+                <div class="col-12 col-lg-4 blog-box">
+                    <img src="images/5st.jpg" class="photobox__preview" alt="Preview"><br><br><br><br>
+                    <img src="images/6st.jpg" class="photobox__preview" alt="Preview">
+                </div>
+                <div class="col-12 col-lg-4 blog-box hiden-blog hide-blog">
+                    <img src="images/4st.jpg" class="photobox__preview" alt="Preview"><br><br><br><br>
+                    <img src="images/6st.jpg" class="photobox__preview" alt="Preview">
+                </div>
+                <div class="col-12 col-lg-4 blog-box hiden-blog  hide-blog">
+                    <img src="images/5st.jpg" class="photobox__preview" alt="Preview"><br><br><br><br>
+                    <img src="images/4st.jpg" class="photobox__preview" alt="Preview">
+                </div>
+                <div class="col-12 col-lg-4 blog-box hiden-blog  hide-blog">
+                    <img src="images/2st.jpg" class="photobox__preview" alt="Preview"><br><br><br><br>
+                    <img src="images/1st.jpg" class="photobox__preview" alt="Preview">
+                </div>
+            </div>
+            <button class="hide-me" id="blog-btn">Show More Stories</button>
+        </div>
+    </div>
+</section>
+<section id="contact-us" class="contact" style="margin-top: -100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="hero-btns contact-btn">
+                    <a href="#">回到顶部</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div style="margin-top: -110px">
+    <img src="images/footer.jpg" width="100%">
+</div>
+
+<!--<div style="margin-top: -100px; background-color: #314584; text-align: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="contact-nav">
+                    <li><a data-scroll href="#">企业服务</a></li>
+                    <li><a data-scroll href="#">人才招聘</a></li>
+                    <li><a data-scroll href="#">联系我们</a></li>
+                    <li><a data-scroll href="#">讲师招募</a></li>
+                    <li><a data-scroll href="#">帮助中心</a></li>
+                    <li><a data-scroll href="#">意见反馈</a></li>
+                    <li><a data-scroll href="#">慕课大学</a></li>
+                    <li><a data-scroll href="#">代码托管</a></li>
+                    <li><a data-scroll href="#">友情链接</a></li>
+                </ul>
+                <h6>© 2019 - Doob,All Right Reserved. More Templates <a href="http://www.cssmoban.com/" style="color:#fff" target="_blank" title="模板之家">模板之家</a> - Collect from <a  style="color:#fff" href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></h6>
+                <ul class="social">
+                    <li><a href="#"><i class="icofont-facebook"></i></a></li>
+                    <li><a href="#"><i class="icofont-twitter"></i></a></li>
+                    <li><a href="#"><i class="icofont-dribbble"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/slick.min.js"></script>
+<script src="js/smooth-scroll.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/index.js"></script>
+<!-- Scripts Ends -->
+</body>
+<script type="text/javascript">
+    (function() {
+        var slideshow = {};       /*创建轮播对象*/
+        slideshow.slides = document.getElementsByClassName("slide");   /*操作DOM获得轮播页面组*/
+        slideshow.dots = document.getElementsByClassName("dot");       /*操作DOM获得圆点按钮组*/
+        slideshow.prevBtn = document.getElementById("slideShowPrev");  /*操作DOM获得前翻页按钮*/
+        slideshow.nextBtn = document.getElementById("slideShowNext");  /*操作DOM获得后翻页按钮*/
+
+        /*显示指定轮播页面*/
+        slideshow.showSlide = function(num) {  /*num 目标页面在页面组中的位置*/
+            var index,
+                slides = this.slides,
+                dots = this.dots,
+                slidesLength = slides.length,
+                dotsLength = dots.length;
+
+            /*num值在范围内轮环，以此来实现轮播*/
+            if(num > slidesLength) {     /*当超过最大值，num返回第一个*/
+                num = 1;
+            } else if(num < 1) {
+                num = slidesLength;      /*当超出最小值，num提升至第一个*/
+            }
+
+            /*关闭全部轮播页面显示*/
+            for(index = 0; index < slidesLength; index++) {
+                slides[index].style.display = "none";
+            }
+
+            /*清除所有圆点按钮的 ".active" */
+            for(index = 0; index < dotsLength; index++) {
+                dots[index].classList.remove("active");
+            }
+
+            /*使目标页面显示，相对应圆点按钮添加 ".active" */
+            /*因为数组从0开始，所以此处 num-1 代表相对应的index*/
+            slides[num - 1].style.display = "block";
+            dots[num - 1].classList.add("active");
+        }
+
+        /*通过前翻，后翻按钮切换页面
+    (num = 1:前翻)(num = -1:后翻)*/
+        slideshow.changeSlide = function(num) {
+            var index,
+                currentSlideIndex,
+                slides = this.slides,
+                slidesLength = slides.length;
+
+            for(index = 0; index < slides.length; index++) {
+                if(slides[index].style.display == "block") {  /*检测到正在显示的页面的index*/
+                    currentSlideIndex = index + 1;            /*因为下标从0开始，所有此处 + 1*/
+                    break;                                   /*此时 currentSlideIndex 为函数调用时，轮播图正在显示的页面的index*/
+                }
+            }
+
+            this.showSlide(currentSlideIndex += num);         /*与num值相加，作为参数调用 showSlide()*/
+        }
+
+        /*自动轮播功能*/
+        slideshow.automaticShow = function() {
+            var index,
+                currentSlideIndex,
+                slides = this.slides,
+                slidesLength = slides.length,
+                that = this;
+
+            /*循环执行代码，每隔三秒切换至下一张页面*/
+            var autoLoop = setInterval(function() {
+                for(index = 0; index < slidesLength; index++) {
+                    if(slides[index].style.display == "block") { /*获得正在显示的页面的index*/
+                        currentSlideIndex = index + 1;
+                        break;
+                    }
+                }
+                that.showSlide(currentSlideIndex + 1);
+            }, 3000);
+        }
+
+        /*添加事件监听*/
+        slideshow.addHandler = function() {
+            var index,
+                prevBtn = this.prevBtn,
+                nextBtn = this.nextBtn,
+                dots = this.dots,
+                dotsLength = dots.length,
+                that = this;      /*此处that为slideshow对象*/
+
+            prevBtn.addEventListener('click', function() {
+                that.changeSlide(-1); /*作用域改变，this不再指slideshow对象*/
+            }, false);
+
+            nextBtn.addEventListener('click', function() {
+                that.changeSlide(1);
+            }, false);
+
+            /*点击圆点按钮，切换至对应页面*/
+            for(index = 0; index < dotsLength; index++) {
+                (function(index) {  /*闭包*/
+                    dots[index].addEventListener('click', function() {
+                        that.showSlide(index + 1); /*index从0开始，所以 + 1*/
+                    }, false);
+                })(index);
+            }
+        }
+
+        /*初始化*/
+        slideshow.init = function() {
+            this.showSlide(1);    /*初始默认页面*/
+            this.automaticShow();
+            this.addHandler();
+        }
+
+        /*调用*/
+        slideshow.init();
+    })();
+
+
+    $(function(){
+        $(".fir .dropdown").hover(
+            function(){
+                $("ul.list").slideToggle(800);//800 为展开显示时间
+            },function(){
+                $("ul.list").slideUp(600)//600为收缩时间
+            })
+    })
+
+</script>
+</html>

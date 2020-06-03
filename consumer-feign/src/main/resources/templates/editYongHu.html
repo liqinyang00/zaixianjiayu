@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{css/bootstrap-table.css}" />
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet"  href="js/bootstrap3/css/bootstrap.css">
+    <script src="/js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-table/bootstrap-table.css">
+    <script src="/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+    <script src="/js/bootstrap-bootbox/bootbox.all.min.js"></script>
+    <script src="/js/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="/js/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-fileinput/css/fileinput.css">
+
+</head>
+<body>
+<div class="container">
+    <form id="formId" class="form-horizontal">
+        <input th:id="userid" th:value="${userid}" type="hidden" name="userid">
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">用户名称</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="username" id="username"  placeholder="username"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="userpassword" id="userpassword"  placeholder="userpassword"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <input type="button" value="修改" onclick="editUserBean()" class="btn btn-info">
+                <a th:href="@{/toMainHouTai}" class="btn btn-success">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function(){
+        toUserEdit();
+    })
+    function toUserEdit() {
+        $.ajax({
+            url:'toUserEdit',
+            type:'post',
+            data:{
+                userid:$("#userid").val()
+            },
+            success:function(data){
+                $("#username").val(data.username);
+                $("#userpassword").val(data.userpassword);
+
+            }
+        })
+    }
+
+
+    function editUserBean(){
+        $.ajax({
+            url: "editUserBean",
+            type: "post",
+            data:$("#formId").serialize(),
+            success:function() {
+                alert("修改成功,请返回!");
+
+            }
+        })
+    }
+
+
+
+</script>
+</body>
+</html>

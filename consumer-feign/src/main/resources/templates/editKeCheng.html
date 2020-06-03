@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{css/bootstrap-table.css}" />
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet"  href="js/bootstrap3/css/bootstrap.css">
+    <script src="/js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-table/bootstrap-table.css">
+    <script src="/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+    <script src="/js/bootstrap-bootbox/bootbox.all.min.js"></script>
+    <script src="/js/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="/js/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-fileinput/css/fileinput.css">
+
+</head>
+<body>
+<div class="container">
+    <form id="formId" class="form-horizontal">
+        <input th:id="courseId" th:value="${courseid}" type="hidden" name="courseid">
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">课程标题</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="coursetitle" id="coursetitle"  placeholder="coursetitle" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">类型</label>
+            <div class="col-sm-8">
+                <select name="coursetype"  id="coursetype" class="form-control">
+                    <option value="1">课件</option>
+                    <option value="2">实战教程</option>
+                    <option value="3">demo</option>
+                    <option value="4">在线辅导</option>
+                    <option value="5">vip特惠礼包</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">作者名</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="authername"  id="authername"  placeholder="authername"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">价格</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="courseprice" id="courseprice"  placeholder="courseprice"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">课程内容</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="coursecontext" id="coursecontext"  placeholder="coursecontext"/>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <input type="button" value="修改" onclick="editGoodsBean()" class="btn btn-info">
+                <a th:href="@{/toMainHouTai}" class="btn btn-success">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function(){
+        toCourseEdit();
+    })
+    function toCourseEdit() {
+        $.ajax({
+            url:'toCourseEdit',
+            type:'post',
+            data:{
+                courseid:$("#courseId").val()
+            },
+            success:function(data){
+                $("#coursetitle").val(data.coursetitle);
+                $("#coursetype").val(data.coursetype);
+                $("#authername").val(data.authername);
+                $("#courseprice").val(data.courseprice);
+                $("#coursecontext").val(data.coursecontext);
+            }
+        })
+    }
+    
+
+    function editGoodsBean(){
+        $.ajax({
+            url: "editGoodsBean",
+            type: "post",
+            data:$("#formId").serialize(),
+            success:function() {
+                alert("修改成功,请返回!");
+
+            }
+        })
+    }
+
+
+
+</script>
+</body>
+</html>

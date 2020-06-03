@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{css/bootstrap-table.css}" />
+
+    <script src="/js/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="/js/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-fileinput/css/fileinput.css">
+
+</head>
+<body>
+<div class="container">
+    <form id="formId" class="form-horizontal">
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">课程标题</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="coursetitle"   placeholder="coursetitle"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">类型</label>
+            <div class="col-sm-8">
+                <select name="coursetype"  id="coursetype" class="form-control">
+                    <option value="1">课件</option>
+                    <option value="2">实战教程</option>
+                    <option value="3">demo</option>
+                    <option value="4">在线辅导</option>
+                    <option value="5">vip特惠礼包</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">封面</label>
+            <div class="col-sm-6">
+                <input type="hidden" id="hideImg" name="courseimg">
+                <input type="file" multiple class="projectfile" accept="image/*" name="file" id="inputImg">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">作者名</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="authername"   placeholder="authername"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">价格</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="courseprice"   placeholder="courseprice"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">课程内容</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="coursecontext"   placeholder="coursecontext"/>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <input type="button" value="新增" onclick="addGoodsBean()" class="btn btn-info">
+                <a th:href="@{/toMainHouTai}" class="btn btn-success">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function addGoodsBean(){
+        $.ajax({
+            url: "addCourseBean",
+            type: "post",
+            data:$("#formId").serialize(),
+            success:function() {
+                alert("新增成功,请返回!");
+
+            }
+        })
+    }
+
+
+    $('#inputImg').fileinput({
+        language: 'zh', //设置语言
+        uploadUrl: 'upload', //上传的地址
+        allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+        showUpload: true, //是否显示上传按钮
+        showCaption: false,//是否显示标题
+        browseClass: "btn btn-primary", //按钮样式
+        maxFileCount: 2, //表示允许同时上传的最大文件个数
+        enctype: 'multipart/form-data',
+        validateInitialCount:true,
+        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+        msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+    }).on('fileuploaded', function(event, data, previewId, index) {
+        var imgval = "http://localhost:8080/"+data.response.img;
+        $('#hideImg').val(imgval);
+    });
+</script>
+</body>
+</html>

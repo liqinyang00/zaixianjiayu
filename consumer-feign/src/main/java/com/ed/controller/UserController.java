@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -106,12 +107,21 @@ public class UserController {
         return resultMap;
     }
 
-
     @PostMapping("/delectShopping")
     @ResponseBody
     public String  delectShopping(@RequestParam Integer shoppingid){
         userService.delectShopping(shoppingid);
         return "0";
+    }
+
+    //全局搜索
+    @GetMapping("/toSearchforCourses")
+    public ModelAndView toSearchforCourses(String keyword){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("keyword",keyword);//
+        // 传值
+        mav.setViewName("Search for courses");//返回页面
+        return mav;
     }
 
     @RequestMapping(value = {"/zhiFu","/zhifu2"})

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <!-- Metas -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="" />
+    <!-- Links -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/icofont.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/slick.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css">
+    <script src="../js/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-treeview/bootstrap-treeview.min.css">
+    <script src="../js/bootStrap-addTabs/bootstrap.addtabs.js"></script>
+    <link rel="stylesheet" href="../js/bootStrap-addTabs/bootstrap.addtabs.css">
+
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <!-- Document Title -->
+    <meta charset="utf-8">
+    <title>全部课程_IT培训精品课程-慕课网</title>
+    <style type="text/css">
+        #header .page-container {
+            width: auto;
+            padding-right: 10px;
+            z-index: 900;
+            box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
+            position: relative;
+        }
+        ul{
+            width: 2000px;
+            height: 20px;
+            margin-left: 180px;
+        }
+        li{
+            list-style-type: none;
+            float: left;
+            line-height: 30px;
+            font-size: 16px;
+            color: #FFFFFF;
+            margin-right:50px;
+        }
+        a{
+            display: block;
+            font-family: "黑体";
+            margin: 0px 0px;
+            color: #717A84;
+            text-align: center;
+            font-size: 16px;
+        }
+        a:hover{
+            color: white;
+            text-decoration: none;
+        }
+        .pinjie2 img{
+            margin-top: -160px;
+            margin-left: 180px;
+        }
+        .pj2 img{
+            margin-top: -76px;
+            margin-left: 300px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            height: 50px;
+        }
+        .pj3 ul{
+            margin-top: -15px;
+            margin-left: 5px;
+        }
+        .pj3 a{
+            color: #E0E0E0;
+            font-size: 12px;
+            font-family: 仿宋;
+        }
+        .pj3 a:hover{
+            color: white;
+        }
+        .list-item {
+            width: 20% !important;
+        }
+        .thumbnail > img, .thumbnail a > img {
+            width: 100%;
+            height: 148px;
+            border-radius: 10px;
+        }
+        .shizan-nam{
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 700;
+            max-height: 48px;
+            margin-top: 16px;
+            transition: .3s all linear;
+            word-break: break-all;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: -o-ellipsis-lastline;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: #2b333b;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <a href="#"><img src="/images/top22.jpg" style="width: 2000px" alt=""></a>
+</div>
+
+<div id="header">
+    <div class="page-container clearfix" id="nav"  style="background-color: #0D171F !important;">
+
+        <ul class=daohang>
+            <li style="margin-top: 5px"><a href="/toMain">慕课网首页</a></li>
+            <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">免费课程</a></li>
+            <li style="margin-top: 5px"><a href="/toShiZhanKeCheng">实战课程</a></li>
+            <li style="margin-top: 5px"><a href="/toKingZhiWei">金职位</a></li>
+            <li style="margin-top: 5px"><a href="/toWIKI">wiki</a></li>
+            <li style="margin-top: 5px"><a href="">专栏</a></li>
+            <li style="margin-top: 5px">
+                <a href="">
+                    手记
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </a>
+            </li>
+            <li style="margin-top: 5px">
+                <a href="/toShoppingCart">
+                    <span>购物车</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<br>
+<div class="pinjie1">
+    <img src="images/logo-course.png" style="margin-left: 40px;width: 180px" alt=""/>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    只 学 有 用 的
+</div><br>
+
+<div class="daohangye">
+    <span id="daohangye"></span>
+</div><br><br><br><br><br><br><br>
+
+<div class="footer" style="margin-top: 600px;">
+    <img src="images/gwcFoot.jpg" width="100%">
+</div>
+
+</body>
+
+<script>
+    $(function(){
+        selectCourse();
+    })
+    function selectCourse(){
+        $.ajax({
+            type:"post",
+            url:"../selectCourse",
+            data:{page:1,rows:20},
+            dataType:"json",
+            success:function(data) {
+                //alert(data.rows);
+                /*var arr = JSON.stringify(data);
+                alert(arr)*/
+                var dh = "";
+                for (var i=0;i<data.rows.length;i++){
+                    dh+=' <div class="col-sm-6 col-md-3 list-item">';
+                    dh+='<div class="thumbnail">';
+                    dh+='<a href="/toXiangQing3"><img src='+data.rows[i].courseimg+' width="100px" height:"100px"></a>';
+                    dh+='<div class="caption">';
+                    dh+='<h4><b class="shizan-name">'+data.rows[i].coursetitle+'</b></h4>';
+                    dh+='<p>收藏人数：'+data.rows[i].coursenumber+'</p>';
+                    dh+='<p>'+data.rows[i].coursecontext+'</p>';
+                    dh+='<p>作者：'+data.rows[i].authername+'</p>';
+                    dh+='<p style="color: red">￥'+data.rows[i].courseprice+'</p>';
+                    dh+='<p>';
+                    dh+='<a href="/toXiangQing1" class="btn btn-primary" role="button">';
+                    dh+='查看详情';
+                    dh+='</a>';
+                    dh+='</p>';
+                    dh+='</div>';
+                    dh+='</div>';
+                    dh+='</div>';
+                }
+                $("#daohangye").html(dh);
+            }
+
+        });
+    }
+</script>
+</html>

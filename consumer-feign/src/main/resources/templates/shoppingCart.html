@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <link rel="stylesheet" th:href="@{../css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{../css/bootstrap-table.css}" />
+    <!-- Metas -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="" />
+    <!-- Links -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/icofont.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/slick.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="js/bootstrap3/css/bootstrap.css">
+    <script src="js/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <link rel="stylesheet" href="js/bootstrap-treeview/bootstrap-treeview.min.css">
+    <script src="js/bootStrap-addTabs/bootstrap.addtabs.js"></script>
+    <link rel="stylesheet" href="js/bootStrap-addTabs/bootstrap.addtabs.css">
+
+    <link rel="stylesheet" href="js/bootstrap-table/bootstrap-table.css">
+    <script src="js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <!-- Document Title -->
+    <meta charset="utf-8">
+    <title>购物车-慕课网</title>
+    <style type="text/css">
+        #header .page-container {
+            width: auto;
+            padding-right: 10px;
+            z-index: 900;
+            box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
+            position: relative;
+        }
+        ul{
+            width: 2000px;
+            height: 20px;
+            margin-left: 180px;
+        }
+        li{
+            list-style-type: none;
+            float: left;
+            line-height: 30px;
+            font-size: 16px;
+            color: #FFFFFF;
+            margin-right:50px;
+        }
+        a{
+            display: block;
+            font-family: "黑体";
+            margin: 0px 0px;
+            color: #717A84;
+            text-align: center;
+            font-size: 16px;
+        }
+        a:hover{
+            color: white;
+            text-decoration: none;
+        }
+        /*.footer{
+            position:fixed;
+            bottom:0;
+        }*/
+        .left{
+            font-family: 宋体;
+            size: 18px;
+            color: black;
+            margin-left: 240px;
+            margin-top: -60px;
+        }
+        .border1{
+            box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, .05);
+            -webkit-box-shadow: #d4d2d2 0px 0px 10px;
+            -moz-box-shadow: #d4d2d2 0px 0px 10px;
+        }
+        .right{
+            margin-left: 900px;
+            margin-top: -60px;
+        }
+        .right a:hover{
+            color: red;
+        }
+    </style>
+</head>
+<body style="background-color: #F8FAFC">
+<div>
+    <a href="#"><img src="/images/top.jpg" style="width: 2000px" alt=""></a>
+</div>
+
+<div id="header">
+    <div class="page-container clearfix" id="nav"  style="background-color: #0D171F !important;">
+
+        <ul class=daohang>
+            <li style="margin-top: 5px"><a href="/toMain">慕课网首页</a></li>
+            <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">免费课程</a></li>
+            <li style="margin-top: 5px"><a href="/toShiZhanKeCheng">实战课程</a></li>
+            <li style="margin-top: 5px"><a href="/toKingZhiWei">金职位</a></li>
+            <li style="margin-top: 5px"><a href="/toWIKI">wiki</a></li>
+            <li style="margin-top: 5px"><a href="">专栏</a></li>
+            <li style="margin-top: 5px">
+                <a href="">
+                    手记
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </a>
+            </li>
+            <li style="margin-top: 5px">
+                <a href="/toShoppingCart">
+                    <span>购物车</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div><br><br><br><br><br>
+
+<div class="myGwc">
+    <h3 class="left">我的购物车</h3><br>
+    <h5 class="right"><a href="javascript:orderList()">我的历史订单</a></h5><br>
+    <div class="border1" style="background-color: white; width: 1100px; height: 1000px; border-radius: 8px; margin: 0 auto">
+            <table class="table table-hover" id="shopping">
+
+            </table>
+    </div>
+</div>
+
+<div class="footer" style="margin-top: 100px;">
+    <img src="images/gwcFoot.jpg" width="100%">
+</div>
+
+
+
+
+
+</body>
+<script>
+    $(function(){
+        selectShopping();
+    })
+    function selectShopping(){
+        $("#shopping").bootstrapTable({
+            url:"../selectShopping",
+            toobal:'#toobal',
+            //分页
+            pagination:true, //是否展示分页
+            sidePagination:'server',//分页方式：client客户端分页，server服务端分页（*
+            pageList:[5, 10, 20, 50],//分页组件
+            pageNumber:1,
+            pageSize:5,//默认每页条数
+            method:'post',
+            contentType:'application/x-www-form-urlencoded',//post请求按照表单方式
+            clickToSelect: true, //是否启用点击选中行
+            striped:true,//斑马线
+            queryParams:function(){
+
+                return{
+                    page:this.pageNumber,
+                    rows:this.pageSize,
+
+                };
+            },
+            columns:[
+                {checkbox:true},
+                {field:'shoppingcourseimg',title:'封面',
+                    formatter:function(value){
+                        return '<img width="100px" height:"100px" src="'+value+'"/>'
+                    }
+                },
+                {field:'shoppingcoursetitle',title:'标题'},
+                {field:'shoppingcourseprice',title:'价格'},
+                {field:'cz',title:'操作',
+                    formatter:function(value,row,index){
+                        return "<a href='javascript:delectShopping("+row.shoppingid+")' class='btn btn-primary' style='background: #f03b35;color: #fff'   role='button'>删&nbsp除</a> " +
+                            " <a href='javascript:aaa("+row.shoppingcourseprice+")' class='btn btn-primary' style='background: #f27d78;color: #fff'   role='button'>结&nbsp算</a>"
+                    }
+                }
+            ]
+        })
+    }
+    function orderList(){
+        window.location.href="../toOrder";
+    }
+
+
+    function delectShopping(shoppingid){
+        $.ajax({
+            type:"post",
+            url:"../delectShopping",
+            data:{shoppingid:shoppingid},
+            dataType:"json",
+            success:function(data) {
+                $("#shopping").bootstrapTable('refresh');
+            }
+        })
+    }
+
+</script>
+</html>

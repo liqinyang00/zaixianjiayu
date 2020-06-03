@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{css/bootstrap-table.css}" />
+</head>
+<body>
+<br>
+<div class="col-sm-5">
+    <input type="text" class="form-control" th:id="coursetitle" name="coursetitle" placeholder="title"/>
+</div>
+<button type="button" th:id="btn" class="btn btn-info glyphicon glyphicon-search">搜索</button>
+<br><br>
+<div  id="div1" th:fragment="div1">
+    <!--<a th:href="@{/toAdd}" class="btn btn-info" shiro:hasPermission="course:create">Add</a>
+    -->
+    <table id="datatable" class="table" >
+        <tr>
+            <th>ID</th>
+            <th>封面</th>
+            <th>课程标题</th>
+            <th>订阅数量</th>
+            <th>类型</th>
+            <th>作者</th>
+            <th>课程价格</th>
+            <th>课程内容</th>
+            <!-- <shiro:hasPermission name="goods:edit">-->
+            <th>Edit</th>
+            <!-- </shiro:hasPermission>-->
+            <th>delete</th>
+        </tr>
+        <tr th:each="course : ${courseList}">
+            <td th:text="${course.courseid}">
+            <td> <img th:src="@{${course.courseimg}}" th:height="120px" th:width="180px"/></td>
+            <td th:text="${course.coursetitle}"></td>
+            <td th:text="${course.coursenumber}"></td>
+            <td th:if="${course.coursetype==1}">课件</td>
+            <td th:if="${course.coursetype==2}">实战教程</td>
+            <td th:if="${course.coursetype==3}">demo</td>
+            <td th:if="${course.coursetype==4}">在线辅导</td>
+            <td th:if="${course.coursetype==5}">vip特惠礼包</td>
+            <td th:text="${course.authername}"></td>
+            <td th:text="${course.courseprice}+'￥'"></td>
+            <td th:text="${course.coursecontext}"></td>
+            <!--<shiro:hasPermission name="goods:edit">-->
+            <td>
+                <a th:href="@{/editKeCheng(courseid=${course.courseid})}">Edit</a>
+            </td>
+            <!--</shiro:hasPermission>-->
+            <td>
+                <a th:href="@{/remove(courseid=${course.courseid})}">删除</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+
+    $('#btn').click(function () {
+
+        var coursetitle = $("#coursetitle").val();
+        var url = '/toList?coursetitle='+coursetitle;
+        $('#div1').load(url);
+    })
+
+</script>
+</body>
+</html>

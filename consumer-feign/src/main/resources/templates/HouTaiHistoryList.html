@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{css/bootstrap-table.css}" />
+</head>
+<body>
+<div>
+
+    <!--<div class="col-sm-5">
+        <input type="text" class="form-control" id="coursetitle" name="coursetitle" />
+    </div>
+    <button type="button" onclick="search()" class="btn btn-info glyphicon glyphicon-search">搜索</button>
+-->
+
+    <!--<a th:href="@{/toAdd}" class="btn btn-info" shiro:hasPermission="course:create">Add</a>
+    --><table class="table" id="datatable">
+    <tr>
+        <th>ID</th>
+        <th>订单号</th>
+        <th>课程标题</th>
+        <th>课程价格</th>
+        <th>课程日期</th>
+        <!-- <shiro:hasPermission name="goods:edit">-->
+        <!--<th>Edit</th>-->
+        <!-- </shiro:hasPermission>-->
+        <th>delete</th>
+    </tr>
+    <tr th:each="history : ${historyList}">
+        <td th:text="${history.orderid}">
+        <td th:text="${history.ordernumber}"></td>
+        <td th:text="${history.ordertitle}"></td>
+        <td th:text="${history.orderprice}"></td>
+        <td th:text="${history.orderdate}"></td>
+        <!--<shiro:hasPermission name="goods:edit">-->
+        <!--<td>
+            <a th:href="@{/editKeCheng(orderid=${history.orderid})}">Edit</a>
+        </td>-->
+        <!--</shiro:hasPermission>-->
+        <td>
+            <a th:href="@{/removeHis(orderid=${history.orderid})}">终端删除</a>
+        </td>
+    </tr>
+</table>
+</div>
+
+
+<script>
+    function search(){
+        $.ajax({
+            url: "/historyList",
+            type: "get",
+            data:{
+                coursetitle:$("#ordertitle").val()
+            },
+            success:function(data) {
+                if (data == null || data == "") {
+                    alert("请联系管理员维护数据");
+                } else {
+                    var  orderid= "";
+                    var  ordernumber= "";
+                    var  ordertitle= "";
+                    var  orderprice= "";
+                    var  orderdate= "";
+                    for (var i = 0;i <data.length; i++){
+                        alert(data[i].courseid)
+                    }
+
+
+                    /* $("#datatable").html(str);*/
+                }
+
+            }
+        })
+    }
+
+</script>
+
+
+</body>
+</html>

@@ -177,11 +177,11 @@
                 <a href="/toOrder">欢迎：<label style="color: red" th:text="${session.value}"></label></a>
             </label></li>
             <li style="margin-top: 5px"><label th:if="${session.value==null}">
-                <a href="/toLogin">登录/</a>
+                <a href="../toLogin">登录/</a>
             </label></li>
             <!-- <li style="margin-top: 5px"><a href="/toLogin">登录&nbsp;&nbsp;/</a></li>-->
             <li style="margin-top: 5px;margin-left: -40px">
-                <a href="/log">注销</a>
+                <a href="/logout">注销</a>
             </li>
 
         </ul>
@@ -484,8 +484,12 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/index.js"></script>
 <!-- Scripts Ends -->
+
+
+
 </body>
 <script type="text/javascript">
+
     (function() {
         var slideshow = {};       /*创建轮播对象*/
         slideshow.slides = document.getElementsByClassName("slide");   /*操作DOM获得轮播页面组*/
@@ -609,6 +613,7 @@
                 $("ul.list").slideUp(600)//600为收缩时间
             })
     })
+
 
 </script>
 </html>

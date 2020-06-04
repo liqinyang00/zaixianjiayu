@@ -239,12 +239,10 @@ public class UserController {
     @GetMapping("/selectCourseType")
     public ModelAndView selectCourseType(String name){
 
-        List<CourseEntity> coutseList = userService.selectCourseType(name);
-
         ModelAndView mav = new ModelAndView();
         mav.addObject("name",name);//
         // 传值
-        mav.setViewName("Search for courses2");//返回页面
+        mav.setViewName("Search for courses2");//返回页面searchCourse2
 
         return mav;
     }
@@ -322,6 +320,21 @@ public class UserController {
     public List<CourseEntity> searchCourse(CourseEntity course){
         if(!StringUtils.isEmpty(course.getCoursetitle())){
             List<CourseEntity> courseEntities = userService.searchCourse(course);
+            return courseEntities;
+        }else {
+            return null;
+        }
+
+    }
+
+    @PostMapping("/searchCourse2")
+    @ResponseBody
+    public List<CourseEntity> searchCourse2(CourseEntity course){
+        if(!StringUtils.isEmpty(course.getName())){
+
+            List<CourseEntity> courseEntities = userService.selectCourseType(course.getName());
+
+           /* List<CourseEntity> courseEntities = userService.searchCourse(course);*/
             return courseEntities;
         }else {
             return null;

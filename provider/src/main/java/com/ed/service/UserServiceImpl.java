@@ -122,4 +122,19 @@ public class UserServiceImpl implements UserService {
     public List<Order> selectOrderList() {
         return userMapper.selectOrderList();
     }
+
+    @RequestMapping("/selectCourseType")
+    @ResponseBody
+    @Override
+    public List<CourseEntity> selectCourseType(@RequestParam String name) {
+
+        return userMapper.selectCourseType(name);
+    }
+
+   /* @RequestMapping("/toShiZhanKeCheng")
+    @Override
+    public List<TypeEntity> selectCourseType() {
+
+        return userMapper.selectCourseType();
+    }*/
 }

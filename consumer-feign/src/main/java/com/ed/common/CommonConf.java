@@ -1,6 +1,6 @@
 package com.ed.common;
 
-public class CommonConf {
+public class  CommonConf {
 
    public  static  final  String TEMPLATEID="14888129";
     public  static  final  String APP_KEY="877b3d049b2bee9aaee4c185582eb5ae";

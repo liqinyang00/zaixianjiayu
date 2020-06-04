@@ -167,7 +167,10 @@
 
 
     <div class="pj2">
-        <input type="text" style="margin-top: -5px; width: 520px; height: 50px; border: 12px solid white; background-color:white; border-radius: 8px; color: #4d5559"  placeholder="&nbsp;&nbsp;请输入关键字..." th:id="coursetitle" th:value="${keyword}">
+
+        <input type="hidden" th:id="name" th:value="${name}"/>
+
+        <input type="text" style="margin-top: -5px; width: 520px; height: 50px; border: 12px solid white; background-color:white; border-radius: 8px; color: #4d5559"  placeholder="&nbsp;&nbsp;请输入关键字..." th:id="name">
         <a href="javascript:search2()"><img src="images/search2.jpg"></a>
         <div class="pj3">
             <ul>
@@ -234,19 +237,20 @@
 <br/><br/>
 
 
-<table id="datatable" class="table"></table>
+<table id="datatable2" class="table"></table>
 </body>
 <script>
     function search2(){
-        $("#datatable").bootstrapTable("refresh");
+        $("#datatable2").bootstrapTable("refresh");
     }
 
     $(function(){
-        initTable();
+        initTable2();
     })
-    function initTable(){
-        $("#datatable").bootstrapTable({
-            url: "../searchCourse",
+    function initTable2(){
+
+        $("#datatable2").bootstrapTable({
+            url: "../searchCourse2",
             pagination:true, //是否展示分页
             pageList:[10, 20, 50, 100],//分页组件
             pageNumber:1,
@@ -259,7 +263,8 @@
                 return {
                     page:this.pageNumber,
                     rows:this.pageSize,
-                    coursetitle: $("#coursetitle").val(),
+                    name: $("#name").val(),
+
                 };
             },
             columns:[

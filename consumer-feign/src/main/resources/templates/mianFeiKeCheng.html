@@ -13,17 +13,17 @@
     <link href="css/main.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css">
 
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/bootstrap3/js/bootstrap.js"></script>
-    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css">
-    <script src="../js/bootstrap-treeview/bootstrap-treeview.min.js"></script>
-    <link rel="stylesheet" href="../js/bootstrap-treeview/bootstrap-treeview.min.css">
-    <script src="../js/bootStrap-addTabs/bootstrap.addtabs.js"></script>
-    <link rel="stylesheet" href="../js/bootStrap-addTabs/bootstrap.addtabs.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="js/bootstrap3/css/bootstrap.css">
+    <script src="js/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <link rel="stylesheet" href="js/bootstrap-treeview/bootstrap-treeview.min.css">
+    <script src="js/bootStrap-addTabs/bootstrap.addtabs.js"></script>
+    <link rel="stylesheet" href="js/bootStrap-addTabs/bootstrap.addtabs.css">
 
-    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css">
-    <script src="../js/bootstrap-table/bootstrap-table.js"></script>
-    <script src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="js/bootstrap-table/bootstrap-table.css">
+    <script src="js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
 
     <!-- Document Title -->
     <meta charset="utf-8">
@@ -159,12 +159,12 @@
 
 <script>
     $(function(){
-        selectCourse();
+        selectMianfCourse();
     })
-    function selectCourse(){
+    function selectMianfCourse(){
         $.ajax({
             type:"post",
-            url:"../selectCourse",
+            url:"../selectMianfCourse",
             data:{page:1,rows:20},
             dataType:"json",
             success:function(data) {
@@ -174,14 +174,14 @@
                 var dh = "";
                 for (var i=0;i<data.rows.length;i++){
                     dh+=' <div class="col-sm-6 col-md-3 list-item">';
-                    dh+='<div class="thumbnail">';
+                    dh+='<div class="thumbnail" style="height: 400px">';
                     dh+='<a href="/toXiangQing3"><img src='+data.rows[i].courseimg+' width="100px" height:"100px"></a>';
                     dh+='<div class="caption">';
                     dh+='<h4><b class="shizan-name">'+data.rows[i].coursetitle+'</b></h4>';
                     dh+='<p>收藏人数：'+data.rows[i].coursenumber+'</p>';
                     dh+='<p>'+data.rows[i].coursecontext+'</p>';
                     dh+='<p>作者：'+data.rows[i].authername+'</p>';
-                    dh+='<p style="color: red">￥'+data.rows[i].courseprice+'</p>';
+                    /*dh+='<p style="color: red">￥'+data.rows[i].courseprice+'</p>';*/
                     dh+='<p>';
                     dh+='<a href="/toXiangQing1" class="btn btn-primary" role="button">';
                     dh+='查看详情';

@@ -25,4 +25,6 @@ public class CourseEntity implements Serializable {
 
     private String coursecontext;
 
+    private String name;
+
 }

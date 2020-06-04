@@ -63,4 +63,16 @@ public interface UserMapper {
 
     @Select("select * from t_order")
     List<Order> selectOrderList();
+
+    @Select("select count(1) from 1908_course")
+    long selectMianfCourseCount();
+
+    @Select("select * from 1908_course c where c.lock=2")
+    List<CourseEntity> selectMianfCourse(Integer page, Integer rows);
+
+    @Select(" select * from 1908_course, 1908_course_type where coursetype = typeid and name = #{name} ")
+    List<CourseEntity> selectCourseType(String name);
+
+    /*@Select(" select * from 1908_course_type ")
+    List<TypeEntity> selectCourseType();*/
 }

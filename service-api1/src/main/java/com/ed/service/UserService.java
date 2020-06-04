@@ -61,4 +61,15 @@ public interface UserService {
     @PostMapping("/orderList")
     @ResponseBody
     List<Order> selectOrderList();
+
+    @PostMapping("/selectMianfCourse")
+    @ResponseBody
+    Map<String, Object> selectMianfCourse(@RequestParam Integer page, @RequestParam Integer rows);
+
+    @RequestMapping("/selectCourseType")
+    @ResponseBody
+    List<CourseEntity> selectCourseType(@RequestParam String name);
+
+    /*@RequestMapping("/toShiZhanKeCheng")
+    List<TypeEntity> selectCourseType();*/
 }

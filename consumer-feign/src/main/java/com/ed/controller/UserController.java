@@ -7,6 +7,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ed.common.CommonConf;
 import com.ed.model.CourseEntity;
 import com.ed.model.Order;
+import com.ed.model.TypeEntity;
 import com.ed.model.UserModel;
 import com.ed.service.UserService;
 import com.ed.util.CheckImgUtil;
@@ -89,37 +90,25 @@ public class UserController {
 
         UserModel loginName = userService.Succ(username);
         if (realCode.equals(code.toLowerCase())) {
-
             if (loginName != null) {
                 if (loginName.getUserpassword().equals(userpassword)) {
-
                     mape.put("cd", 1);
                     mape.put("msg", "登录成功");
                     request.getSession().setAttribute("username", loginName.getUsername());
                 } else {
                     mape.put("cd", 2);
                     mape.put("msg", "密码错误");
-
-
                 }
             } else {
                 mape.put("cd", 3);
                 mape.put("msg", "用户名错误");
-
-
             }
-
         } else {
             mape.put("cd", 4);
             mape.put("msg", "验证码错误");
-
-
         }
 
-
         return mape;
-
-
     }
 
     //注册
@@ -238,8 +227,29 @@ public class UserController {
 
     @GetMapping("/toShiZhanKeCheng")
     public String toShiZhanKeCheng(){
+
+        /*ModelAndView mav = new ModelAndView();
+
+        List<TypeEntity> typeList = userService.selectCourseType();
+
+        mav.addObject("typeList", typeList);
+        mav.setViewName("shiZhanKeCheng");*/
         return "shiZhanKeCheng";
     }
+
+    @GetMapping("/selectCourseType")
+    public ModelAndView selectCourseType(String name){
+
+        List<CourseEntity> coutseList = userService.selectCourseType(name);
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("name",name);//
+        // 传值
+        mav.setViewName("Search for courses2");//返回页面
+
+        return mav;
+    }
+
 
     @GetMapping("/toMianFeiKeCheng")
     public String toMianFeiKeCheng(){

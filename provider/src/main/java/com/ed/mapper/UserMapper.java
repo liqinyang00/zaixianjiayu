@@ -7,7 +7,6 @@ import com.ed.model.UserModel;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -64,11 +63,4 @@ public interface UserMapper {
 
     @Select("select * from t_order")
     List<Order> selectOrderList();
-
-    @Select("select count(1) from 1908_course")
-    long selectMianfCourseCount();
-
-    @Select("select * from 1908_course c where c.lock=2")
-    List<CourseEntity> selectMianfCourse(Integer page, Integer rows);
-
 }

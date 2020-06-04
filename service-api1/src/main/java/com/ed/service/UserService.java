@@ -61,9 +61,4 @@ public interface UserService {
     @PostMapping("/orderList")
     @ResponseBody
     List<Order> selectOrderList();
-
-    @PostMapping("/selectMianfCourse")
-    @ResponseBody
-    Map<String, Object> selectMianfCourse(@RequestParam Integer page, @RequestParam Integer rows);
-
 }

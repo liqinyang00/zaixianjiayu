@@ -1,7 +1,6 @@
 package com.ed.utils;
 
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -36,9 +35,9 @@ public class FileUtil {
 	 * @param bytes
 	 * @return
 	 */
-	public static String binaryToBase64Str(byte[] bytes){
+	/*public static String binaryToBase64Str(byte[] bytes){
 		return new BASE64Encoder().encodeBuffer(bytes).trim();
-	}
+	}*/
 	
 	/**
 	 * 

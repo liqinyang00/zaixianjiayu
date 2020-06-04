@@ -52,7 +52,7 @@ public interface UserService {
 
     @PostMapping("/searchCourse")
     @ResponseBody
-    List<CourseEntity> searchCourse(CourseEntity course);
+    List<CourseEntity> searchCourse(@RequestBody CourseEntity course);
 
     @RequestMapping("/zhiFu2")
     @ResponseBody

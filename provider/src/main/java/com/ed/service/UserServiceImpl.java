@@ -1,7 +1,11 @@
 package com.ed.service;
 
 import com.ed.mapper.UserMapper;
-import com.ed.model.*;
+import com.ed.model.CourseEntity;
+import com.ed.model.Order;
+import com.ed.model.ShoppingEntity;
+import com.ed.model.UserModel;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -118,19 +122,4 @@ public class UserServiceImpl implements UserService {
     public List<Order> selectOrderList() {
         return userMapper.selectOrderList();
     }
-
-    @RequestMapping("/selectCourseType")
-    @ResponseBody
-    @Override
-    public List<CourseEntity> selectCourseType(@RequestParam String name) {
-
-        return userMapper.selectCourseType(name);
-    }
-
-   /* @RequestMapping("/toShiZhanKeCheng")
-    @Override
-    public List<TypeEntity> selectCourseType() {
-
-        return userMapper.selectCourseType();
-    }*/
 }

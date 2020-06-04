@@ -148,7 +148,6 @@ public class UserController {
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("mobile", phone);
-            params.put("templateid", CommonConf.TEMPLATEID);
             params.put("authCode", authCode);
 
             HashMap<String, Object> headerParam = new HashMap<>();
@@ -318,6 +317,18 @@ public class UserController {
         return mav;
     }
 
+    @PostMapping("/searchCourse")
+    @ResponseBody
+    public List<CourseEntity> searchCourse(CourseEntity course){
+        if(!StringUtils.isEmpty(course.getCoursetitle())){
+            List<CourseEntity> courseEntities = userService.searchCourse(course);
+            return courseEntities;
+        }else {
+            return null;
+        }
+
+    }
+
     @RequestMapping(value = {"/zhiFu","/zhifu2"})
     @ResponseBody
     public String zhiFu(@RequestParam String courseid) throws Exception{
@@ -385,15 +396,4 @@ public class UserController {
 
     }
 
-    @PostMapping("/searchCourse")
-    @ResponseBody
-    public List<CourseEntity>  searchCourse(CourseEntity course){
-        if(!StringUtils.isEmpty(course.getCoursetitle())){
-            List<CourseEntity> courseEntities = userService.searchCourse(course);
-            return courseEntities;
-        }else {
-            return null;
-        }
-
-    }
 }

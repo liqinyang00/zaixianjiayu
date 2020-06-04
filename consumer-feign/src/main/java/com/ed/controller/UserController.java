@@ -277,9 +277,16 @@ public class UserController {
         return resultMap;
     }
 
+    @PostMapping("/selectMianfCourse")
+    @ResponseBody
+    public Map<String, Object> selectMianfCourse(@RequestParam Integer page,@RequestParam Integer rows){
+        Map<String, Object> resultMap = userService.selectMianfCourse(page, rows);
+        return resultMap;
+    }
+
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
-    public String  selectCourseCourseid(@RequestParam Integer courseid){
+    public String selectCourseCourseid(@RequestParam Integer courseid){
         return userService.selectCourseCourseid(courseid);
     }
 

@@ -123,4 +123,17 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectOrderList();
     }
 
+    @PostMapping("/selectMianfCourse")
+    @ResponseBody
+    @Override
+    public Map<String, Object> selectMianfCourse(Integer page, Integer rows) {
+        long coursetotal = userMapper.selectMianfCourseCount();
+        List<CourseEntity> courseList = userMapper.selectMianfCourse((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
+    }
+
+
 }

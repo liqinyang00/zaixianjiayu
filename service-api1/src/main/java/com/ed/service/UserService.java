@@ -70,6 +70,15 @@ public interface UserService {
     @ResponseBody
     List<CourseEntity> selectCourseType(@RequestParam String name);
 
+    @RequestMapping("/newteachwell")
+    @ResponseBody
+    Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows);
+
+    @RequestMapping("/popularcourses")
+    @ResponseBody
+    Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows);
+
+
     /*@RequestMapping("/toShiZhanKeCheng")
     List<TypeEntity> selectCourseType();*/
 }

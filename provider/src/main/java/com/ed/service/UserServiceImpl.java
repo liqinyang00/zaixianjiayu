@@ -143,6 +143,36 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectCourseType(name);
     }
 
+    @RequestMapping("/newteachwell")
+    @ResponseBody
+    @Override
+    public Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+
+        long coursetotal = userMapper.newteachwellCount();
+        List<CourseEntity> courseList = userMapper.newteachwell((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
+    }
+
+    @RequestMapping("/popularcourses")
+    @ResponseBody
+    @Override
+    public Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+
+        List<CourseEntity> list = userMapper.popularcoursesCount();
+
+        long coursetotal = list.size();
+
+
+        List<CourseEntity> courseList = userMapper.popularcourses((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
+    }
+
    /* @RequestMapping("/toShiZhanKeCheng")
     @Override
     public List<TypeEntity> selectCourseType() {

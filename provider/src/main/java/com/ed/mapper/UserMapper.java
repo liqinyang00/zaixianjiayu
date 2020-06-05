@@ -7,6 +7,7 @@ import com.ed.model.UserModel;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -72,6 +73,18 @@ public interface UserMapper {
 
     @Select(" select * from 1908_course, 1908_course_type where coursetype = typeid and name = #{name} ")
     List<CourseEntity> selectCourseType(String name);
+
+    @Select(" select * from 1908_course c where c.coursetime BETWEEN  date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m-%d') AND SYSDATE() ORDER BY c.coursetime desc limit #{page}, #{rows} ")
+    List<CourseEntity> newteachwell(Integer page, Integer rows);
+
+    @Select(" select count(1) from 1908_course c where c.coursetime BETWEEN date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m-%d') AND SYSDATE() ORDER BY c.coursetime desc ")
+    long newteachwellCount();
+
+    @Select(" select * from  1908_course c  ORDER BY c.coursenumber DESC LIMIT 8 ")
+    List<CourseEntity> popularcoursesCount();
+
+    @Select(" select * from 1908_course c ORDER BY c.coursenumber DESC LIMIT  #{page}, #{rows} ")
+    List<CourseEntity> popularcourses(Integer page, Integer rows);
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/

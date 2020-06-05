@@ -416,4 +416,25 @@ public class UserController {
 
     }
 
+    //新上课程
+    @RequestMapping("/newteachwell")
+    @ResponseBody
+    public Map<String, Object> newteachwell(Integer page, Integer rows){
+
+        Map<String, Object> map = userService.newteachwell(page, rows);
+
+        return map;
+    }
+
+    //热销课程
+    @RequestMapping("/popularcourses")
+    @ResponseBody
+    public Map<String, Object> popularcourses(Integer page, Integer rows){
+
+        Map<String, Object> map = userService.popularcourses(page, rows);
+
+        return map;
+    }
+
+
 }

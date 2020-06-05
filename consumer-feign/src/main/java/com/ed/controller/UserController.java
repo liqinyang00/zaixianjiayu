@@ -340,7 +340,6 @@ public class UserController {
         if(!StringUtils.isEmpty(course.getName())){
 
             List<CourseEntity> courseEntities = userService.selectCourseType(course.getName());
-
            /* List<CourseEntity> courseEntities = userService.searchCourse(course);*/
             return courseEntities;
         }else {

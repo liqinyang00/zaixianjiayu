@@ -69,6 +69,7 @@ public interface UserMapper {
 
     @Select(" select * from 1908_course, 1908_course_type where coursetype = typeid and name = #{name} ")
     List<CourseEntity> selectCourseType(String name);
+
     @Select("select * from t_slideshow")
     List<Slideshow> selectSlideshow();
 

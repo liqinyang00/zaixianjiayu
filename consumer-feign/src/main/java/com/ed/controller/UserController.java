@@ -213,7 +213,7 @@ public class UserController {
         if (username != null) {
             request.getSession().removeAttribute("username");
         }
-        return "login";
+        return "redirect:toMain";
     }
 
     @GetMapping("/toShoppingCart")

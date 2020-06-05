@@ -1,12 +1,21 @@
 package com.ed.mapper;
 
+
+import com.ed.model.User;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import com.ed.model.*;
 import org.apache.ibatis.annotations.*;
+
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
+
+
+    @Select("SELECT * FROM `t`")
+    List<User> text();
 
     @Select("select * from t_user where username=#{username}")
     UserModel Succ(String username);
@@ -76,4 +85,5 @@ public interface UserMapper {
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/
+
 }

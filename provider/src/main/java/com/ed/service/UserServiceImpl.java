@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     }*/
 
 
+    /*@Override
+    public String hello() {
+        return null;
+    }*/
+
     @RequestMapping("/success")
     @ResponseBody
     @Override
@@ -69,10 +74,10 @@ public class UserServiceImpl implements UserService {
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
     @Override
-    public String selectCourseCourseid(Integer courseid) {
+    public String selectCourseCourseid(Integer courseid,Integer userid) {
         try{
             CourseEntity courseEntities =  userMapper.selectCourseCourseid(courseid).get(0);
-            userMapper.addShopping(courseEntities);
+            userMapper.addShopping(courseEntities,userid);
             return  "100";
         }catch (Exception e){
             e.printStackTrace();
@@ -117,8 +122,8 @@ public class UserServiceImpl implements UserService {
     @RequestMapping("/zhiFu2")
     @ResponseBody
     @Override
-    public void addOrder(String out_trade_no, Double total_amount, String subject) {
-        userMapper.addOrder(out_trade_no,total_amount,subject);
+    public void addOrder(String out_trade_no, Double total_amount, String subject,Integer userid) {
+        userMapper.addOrder(out_trade_no,total_amount,subject,userid);
     }
 
     @PostMapping("/orderList")
@@ -152,6 +157,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Slideshow> selectSlideshow() {
         return userMapper.selectSlideshow();
+    }
+    @RequestMapping("/userList")
+    @ResponseBody
+    @Override
+    public UserEntity userList(String username) {
+        return userMapper.userList(username);
     }
 
     @RequestMapping("/newteachwell")

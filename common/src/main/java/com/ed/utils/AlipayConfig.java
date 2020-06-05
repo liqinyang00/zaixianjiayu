@@ -22,7 +22,7 @@ public class AlipayConfig{
      * 此页面是同步返回用户页面，也就是用户支付后看到的页面，上面的notify_url是异步返回商家操作，谢谢
      * 要是看不懂就找度娘，或者多读几遍，或者去看支付宝第三方接口API，不看API直接拿去就用，遇坑不怪别人
      */
-    public static String return_url = "http://localhost:8080/return_url";
+    public static String return_url = "http://localhost:8070/return_url";
     // 签名方式
     public static String sign_type = "RSA2";
     // 字符编码格式

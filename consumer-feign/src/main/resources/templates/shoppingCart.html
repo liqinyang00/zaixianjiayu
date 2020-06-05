@@ -115,6 +115,12 @@
                     <span>购物车</span>
                 </a>
             </li>
+            <li style="margin-top: 5px"><label th:if="${session.value!=null}">
+                <a href="/toOrder">欢迎：<label style="color: red" th:text="${session.value}"></label></a>
+            </label></li>
+            <li style="margin-top: 5px"><label th:if="${session.value==null}">
+                <a href="../toLogin">登录/注销</a>
+            </label></li>
         </ul>
     </div>
 </div><br><br><br><br><br>

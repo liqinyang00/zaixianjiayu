@@ -5,10 +5,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ed.common.CommonConf;
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.Slideshow;
-import com.ed.model.UserModel;
+import com.ed.model.*;
 import com.ed.util.CheckImgUtil;
 import com.ed.service.*;
 import com.ed.util.CheckSumBuilder;
@@ -295,8 +292,11 @@ public class UserController {
 
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
-    public String selectCourseCourseid(@RequestParam Integer courseid){
-        return userService.selectCourseCourseid(courseid);
+    public String selectCourseCourseid(@RequestParam Integer courseid,HttpServletRequest request){
+        String username = (String )request.getSession().getAttribute("username");
+        UserEntity user = userService.userList(username);
+        Integer userid = user.getUserid();
+        return userService.selectCourseCourseid(courseid,userid);
     }
 
     @PostMapping("/selectShopping")
@@ -348,10 +348,14 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = {"/zhiFu","/zhifu2"})
+    @RequestMapping(value = {"/zhiFu","/zhifu2","/userList"})
     @ResponseBody
-    public String zhiFu(@RequestParam String courseid) throws Exception{
+    public String zhiFu(@RequestParam String courseid,HttpServletRequest request) throws Exception{
         CourseEntity course = userService.getOrderById(courseid);
+
+        String username = (String )request.getSession().getAttribute("username");
+        UserEntity user = userService.userList(username);
+        Integer userid = user.getUserid();
 
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
@@ -368,7 +372,7 @@ public class UserController {
         String subject = course.getCoursetitle();
 
         redisUtil.del(RedisConstant.ORDER_LIST);
-        userService.addOrder(out_trade_no,total_amount,subject);
+        userService.addOrder(out_trade_no,total_amount,subject,userid);
 
 
        /* //商品描述，可空
@@ -394,6 +398,7 @@ public class UserController {
      */
     @RequestMapping("return_url")
     public String Return_url() throws InterruptedException {
+
         return "chenggong";
     }
 

@@ -1,10 +1,7 @@
 package com.ed.service;
 
 import com.ed.mapper.UserMapper;
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.ShoppingEntity;
-import com.ed.model.UserModel;
+import com.ed.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -141,6 +138,12 @@ public class UserServiceImpl implements UserService {
     public List<CourseEntity> selectCourseType(@RequestParam String name) {
 
         return userMapper.selectCourseType(name);
+    }
+    @RequestMapping("/selectSlideshow")
+    @ResponseBody
+    @Override
+    public List<Slideshow> selectSlideshow() {
+        return userMapper.selectSlideshow();
     }
 
    /* @RequestMapping("/toShiZhanKeCheng")

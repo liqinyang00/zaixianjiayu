@@ -2,6 +2,7 @@ package com.ed.service;
 
 import com.ed.model.CourseEntity;
 import com.ed.model.Order;
+import com.ed.model.Slideshow;
 import com.ed.model.UserModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +70,10 @@ public interface UserService {
     @RequestMapping("/selectCourseType")
     @ResponseBody
     List<CourseEntity> selectCourseType(@RequestParam String name);
+
+    @RequestMapping("/selectSlideshow")
+    @ResponseBody
+    List<Slideshow> selectSlideshow();
 
     /*@RequestMapping("/toShiZhanKeCheng")
     List<TypeEntity> selectCourseType();*/

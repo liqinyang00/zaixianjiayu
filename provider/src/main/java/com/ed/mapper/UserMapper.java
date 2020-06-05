@@ -1,9 +1,6 @@
 package com.ed.mapper;
 
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.ShoppingEntity;
-import com.ed.model.UserModel;
+import com.ed.model.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -72,6 +69,8 @@ public interface UserMapper {
 
     @Select(" select * from 1908_course, 1908_course_type where coursetype = typeid and name = #{name} ")
     List<CourseEntity> selectCourseType(String name);
+    @Select("select * from t_slideshow")
+    List<Slideshow> selectSlideshow();
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/

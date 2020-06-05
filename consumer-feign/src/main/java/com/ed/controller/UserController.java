@@ -5,10 +5,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ed.common.CommonConf;
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.TypeEntity;
-import com.ed.model.UserModel;
+import com.ed.model.*;
 import com.ed.service.UserService;
 import com.ed.util.CheckImgUtil;
 import com.ed.util.CheckSumBuilder;
@@ -414,6 +411,12 @@ public class UserController {
         }
         return orderList;
 
+    }
+
+    @RequestMapping("/selectSlideshow")
+    @ResponseBody
+    public List<Slideshow> selectSlideshow(){
+       return userService.selectSlideshow();
     }
 
 }

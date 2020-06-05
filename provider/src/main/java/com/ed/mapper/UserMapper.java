@@ -1,16 +1,21 @@
 package com.ed.mapper;
 
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.ShoppingEntity;
-import com.ed.model.UserModel;
+
+import com.ed.model.User;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import com.ed.model.*;
 import org.apache.ibatis.annotations.*;
 
+
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface UserMapper {
+
+
+   /* @Select("SELECT * FROM `t`")
+    List<User> text();*/
 
     @Select("select * from t_user where username=#{username}")
     UserModel Succ(String username);
@@ -73,6 +78,8 @@ public interface UserMapper {
 
     @Select(" select * from 1908_course, 1908_course_type where coursetype = typeid and name = #{name} ")
     List<CourseEntity> selectCourseType(String name);
+    @Select("select * from t_slideshow")
+    List<Slideshow> selectSlideshow();
 
     @Select(" select * from 1908_course c where c.coursetime BETWEEN  date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m-%d') AND SYSDATE() ORDER BY c.coursetime desc limit #{page}, #{rows} ")
     List<CourseEntity> newteachwell(Integer page, Integer rows);
@@ -88,4 +95,5 @@ public interface UserMapper {
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/
+
 }

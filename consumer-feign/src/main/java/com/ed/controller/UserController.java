@@ -7,10 +7,10 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ed.common.CommonConf;
 import com.ed.model.CourseEntity;
 import com.ed.model.Order;
-import com.ed.model.TypeEntity;
+import com.ed.model.Slideshow;
 import com.ed.model.UserModel;
-import com.ed.service.UserService;
 import com.ed.util.CheckImgUtil;
+import com.ed.service.*;
 import com.ed.util.CheckSumBuilder;
 import com.ed.util.HttpClientUtil;
 import com.ed.utils.AlipayConfig;
@@ -19,20 +19,29 @@ import com.ed.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+
 import java.util.concurrent.TimeUnit;
 
 @Controller
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @Autowired
@@ -40,11 +49,6 @@ public class UserController {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
-    @RequestMapping("/")
-    public String hello() {
-        return userService.hello();
-    }
 
     @GetMapping("/toMain")
     public String toMain(HttpServletRequest request, HttpServletResponse response) {
@@ -77,7 +81,6 @@ public class UserController {
         request.getSession().setAttribute("value", username);*//*
         return "hello";
     }*/
-
 
     //登录
     @RequestMapping("/success")
@@ -115,7 +118,7 @@ public class UserController {
     @RequestMapping(value = {"/reg", "/reg1"})
     @ResponseBody
     public HashMap reg(UserModel user) {
-        UserModel reuser = userService.reg(user.getUsername());
+        UserModel reuser = userService.reg(user.getUsername);
         HashMap<String, Object> msg = new HashMap<>();
         if (reuser != null) {
             msg.put("cod", 5);
@@ -228,9 +231,7 @@ public class UserController {
     public String toShiZhanKeCheng(){
 
         /*ModelAndView mav = new ModelAndView();
-
         List<TypeEntity> typeList = userService.selectCourseType();
-
         mav.addObject("typeList", typeList);
         mav.setViewName("shiZhanKeCheng");*/
         return "shiZhanKeCheng";
@@ -331,7 +332,6 @@ public class UserController {
         }else {
             return null;
         }
-
     }
 
     @PostMapping("/searchCourse2")
@@ -346,14 +346,12 @@ public class UserController {
         }else {
             return null;
         }
-
     }
 
     @RequestMapping(value = {"/zhiFu","/zhifu2"})
     @ResponseBody
     public String zhiFu(@RequestParam String courseid) throws Exception{
         CourseEntity course = userService.getOrderById(courseid);
-
 
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
@@ -436,5 +434,11 @@ public class UserController {
         return map;
     }
 
+    @RequestMapping("/selectSlideshow")
+    @ResponseBody
+    public List<Slideshow> selectSlideshow(){
+       return userService.selectSlideshow();
+    }
 
 }
+

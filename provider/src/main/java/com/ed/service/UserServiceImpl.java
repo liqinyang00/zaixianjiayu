@@ -1,10 +1,7 @@
 package com.ed.service;
 
 import com.ed.mapper.UserMapper;
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.ShoppingEntity;
-import com.ed.model.UserModel;
+import com.ed.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,38 +10,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 public class UserServiceImpl implements UserService {
+
     @Resource
     private UserMapper userMapper;
 
+    /*@GetMapping("/")
+    @ResponseBody
     @Override
-    public String hello() {
-        return "成功！！！";
-    }
+    public List<User> text() {
 
-    @Override
+        return userMapper.text();
+    }*/
+
+
     @RequestMapping("/success")
     @ResponseBody
-    public UserModel Succ( @RequestParam("username")  String username) {
+    @Override
+    public UserModel Succ(@RequestParam("username")  String username) {
         return userMapper.Succ(username);
     }
 
-    @Override
+
     @RequestMapping("/reg")
     @ResponseBody
+    @Override
     public UserModel reg( @RequestParam("username") String username) {
         return userMapper.reg(username);
     }
+
     @RequestMapping("/reg1")
     @ResponseBody
     public void addUser  (@RequestBody UserModel user) {
         userMapper.addUser(user);
     }
 
-    @Override
+
     @RequestMapping("/phoneLogin")
     @ResponseBody
+    @Override
     public UserModel fingName(@RequestParam String phone) {
         return userMapper.fingName(phone);
     }
@@ -141,6 +146,12 @@ public class UserServiceImpl implements UserService {
     public List<CourseEntity> selectCourseType(@RequestParam String name) {
 
         return userMapper.selectCourseType(name);
+    }
+    @RequestMapping("/selectSlideshow")
+    @ResponseBody
+    @Override
+    public List<Slideshow> selectSlideshow() {
+        return userMapper.selectSlideshow();
     }
 
     @RequestMapping("/newteachwell")

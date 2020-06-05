@@ -1,9 +1,6 @@
 package com.ed.service;
 
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.Slideshow;
-import com.ed.model.UserModel;
+import com.ed.model.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +34,7 @@ public interface UserService {
 
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
-    String selectCourseCourseid(@RequestParam Integer courseid);
+    String selectCourseCourseid(@RequestParam Integer courseid,@RequestParam Integer userid);
 
     @PostMapping("/delectShopping")
     @ResponseBody
@@ -57,7 +54,7 @@ public interface UserService {
 
     @RequestMapping("/zhiFu2")
     @ResponseBody
-    void addOrder(@RequestParam String out_trade_no,@RequestParam Double total_amount,@RequestParam String subject);
+    void addOrder(@RequestParam String out_trade_no,@RequestParam Double total_amount,@RequestParam String subject,@RequestParam Integer userid);
 
     @PostMapping("/orderList")
     @ResponseBody
@@ -74,6 +71,9 @@ public interface UserService {
     @RequestMapping("/selectSlideshow")
     @ResponseBody
     List<Slideshow> selectSlideshow();
+    @RequestMapping("/userList")
+    @ResponseBody
+    UserEntity userList(@RequestParam String username);
 
     /*@RequestMapping("/toShiZhanKeCheng")
     List<TypeEntity> selectCourseType();*/

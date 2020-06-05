@@ -30,9 +30,9 @@ public interface UserMapper {
     @Select("select * from 1908_course where courseid = #{value}")
     List<CourseEntity> selectCourseCourseid(Integer courseid);
 
-    @Insert("insert into t_shopping(shoppingcourseimg,shoppingcoursetitle,shoppingcourseid,shoppingcourseprice) " +
-            "values(#{courseEntities.courseimg},#{courseEntities.coursetitle},#{courseEntities.courseid},#{courseEntities.courseprice})")
-    void addShopping(@Param("courseEntities") CourseEntity courseEntities);
+    @Insert("insert into t_shopping(shoppingcourseimg,shoppingcoursetitle,shoppingcourseid,shoppingcourseprice,userid) " +
+            "values(#{courseEntities.courseimg},#{courseEntities.coursetitle},#{courseEntities.courseid},#{courseEntities.courseprice},#{userid})")
+    void addShopping(@Param("courseEntities") CourseEntity courseEntities,@Param("userid")Integer userid);
 
     @Delete("delete from t_shopping where shoppingid=#{shoppingid}")
     void delectShopping(Integer shoppingid);
@@ -55,8 +55,8 @@ public interface UserMapper {
             "</script>" )
     List<CourseEntity> searchCourse(CourseEntity course);
 
-    @Insert("insert into t_order (ordernumber,orderdate,ordertitle,orderprice) values (#{out_trade_no},now(),#{subject},#{total_amount})")
-    void addOrder(@Param("out_trade_no")String out_trade_no, @Param("total_amount")Double total_amount, @Param("subject")String subject);
+    @Insert("insert into t_order (ordernumber,orderdate,ordertitle,orderprice,userid) values (#{out_trade_no},now(),#{subject},#{total_amount},#{userid})")
+    void addOrder(@Param("out_trade_no")String out_trade_no, @Param("total_amount")Double total_amount, @Param("subject")String subject, @Param("userid")Integer userid);
 
     @Select("select * from t_order")
     List<Order> selectOrderList();
@@ -71,6 +71,8 @@ public interface UserMapper {
     List<CourseEntity> selectCourseType(String name);
     @Select("select * from t_slideshow")
     List<Slideshow> selectSlideshow();
+    @Select("select * from t_user t where t.username=#{value}")
+    UserEntity userList(String username);
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/

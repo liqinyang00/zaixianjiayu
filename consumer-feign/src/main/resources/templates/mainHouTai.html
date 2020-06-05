@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/jquery-1.9.1.min.js"></script>
+    <script src="../js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../js/bootstrap-treeview/bootstrap-treeview.min.css">
+    <script src="../js/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <link rel="stylesheet" href="../js/bootStrap-addTabs/bootstrap.addtabs.css">
+    <script src="../js/bootStrap-addTabs/bootstrap.addtabs.min.js"></script>
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 20px;">
+    <h3><shiro:principal property="username" />
+        <a href="/toLoginHouTai">注销</a></h3><br>
+    <div class="row">
+        <div class="col-xs-2">
+            <div id="myTree"></div>
+        </div>
+        <div class="col-xs-10">
+            <div id="myTabs">
+                <!-- 新选项卡 -->
+                <ul class="nav nav-tabs" id="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" role="tab" data-toggle="tab">欢迎</a>
+                    </li>
+                </ul>
+                <!-- 选项卡下内容 -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function(){
+        initTree();
+    });
+
+    function initTree(){
+        $.ajax({
+            url: "../queryTree",
+            type: "post",
+            dataType: "json",
+            success: function(data){
+                $('#myTree').treeview({
+                    data:data,
+                    onNodeSelected:function(event, node) {
+                        $.addtabs({iframeHeight: 550});
+                        $.addtabs.add({
+                            id:node.id,
+                            title:node.text,
+                            url:node.href
+                        });
+                    }
+                })
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

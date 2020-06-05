@@ -118,7 +118,6 @@
             font-family: "微软雅黑 Light";
         }
 
-
         .dropdown ul{
              display:none;
              text-align:center;
@@ -145,7 +144,6 @@
     <div class="page-container clearfix" id="nav"  style="background-color: #fff !important;">
 
         <ul class=daohang>
-
             <li><a href="/" target="_self" title="首页"><img title="慕课网" src="images/logo.jpg"></a></li>
             <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">免费课程</a></li>
             <li style="margin-top: 5px"><a href="/toShiZhanKeCheng">实战课程</a></li>
@@ -179,11 +177,11 @@
                 <a href="/toOrder">欢迎：<label style="color: red" th:text="${session.value}"></label></a>
             </label></li>
             <li style="margin-top: 5px"><label th:if="${session.value==null}">
-                <a href="/toLogin">登录/</a>
+                <a href="../toLogin">登录/</a>
             </label></li>
             <!-- <li style="margin-top: 5px"><a href="/toLogin">登录&nbsp;&nbsp;/</a></li>-->
             <li style="margin-top: 5px;margin-left: -40px">
-                <a href="/log">注销</a>
+                <a href="/logout">注销</a>
             </li>
 
         </ul>
@@ -195,30 +193,32 @@
 
 <div class="slideshow-container" style="margin-top: -80px"> <!-- 轮播容器开始 -->
     <!-- 轮播页面 -->
+
     <div class="slide">
-        <div class="slideIndex"></div> <!-- 展示页码 -->
-        <a href="toXiangQing1"><img src="images/5e7dca9f00019ffc16000652.jpg"></a>           <!-- 轮播图片 -->
+        <span id="lbt"></span>
+        <div class="slideIndex"></div><!-- &lt;!&ndash; 展示页码 &ndash;&gt;-->
+        <span  name="image"> </span>     <!--  &lt;!&ndash; 轮播图片 &ndash;&gt;-->
     </div>
-    <!-- 轮播页面 -->
+   <!-- &lt;!&ndash; 轮播页面 &ndash;&gt;-->
     <div class="slide">
-        <div class="slideIndex"></div> <!-- 展示页码 -->
-        <a href="toXiangQing2"><img src="images/5e7dca46000182c718720764.jpg"></a>           <!-- 轮播图片 -->
+        <div class="slideIndex"></div> <!--&lt;!&ndash; 展示页码 &ndash;&gt;-->
+        <span  name="image"></span>           <!-- &lt;!&ndash; 轮播图片 &ndash;&gt;-->
     </div>
-    <!-- 轮播页面 -->
+    <!--&lt;!&ndash; 轮播页面 &ndash;&gt;-->
     <div class="slide">
-        <div class="slideIndex"></div> <!-- 展示页码 -->
-        <a href="toXiangQing1"><img src="images/5e93cfe00001d27c18720764.jpg"></a>           <!-- 轮播图片 -->
+        <div class="slideIndex"></div> <!--&lt;!&ndash; 展示页码 &ndash;&gt;-->
+        <span  name="image"></span>           <!--&lt;!&ndash; 轮播图片 &ndash;&gt;-->
     </div>
-    <!-- 轮播页面 -->
+    <!--&lt;!&ndash; 轮播页面 &ndash;&gt;-->
     <div class="slide">
-        <div class="slideIndex"></div> <!-- 展示页码 -->
-        <a href="toXiangQing2"><img src="images/5e683f6f00012ec118720764.jpg"></a>           <!-- 轮播图片 -->
+        <div class="slideIndex"></div> <!--&lt;!&ndash; 展示页码 &ndash;&gt;-->
+        <span  name="image"></span>         <!--&lt;!&ndash; 轮播图片 &ndash;&gt;-->
     </div>
-    <!-- 轮播页面 -->
+    <!--&lt;!&ndash; 轮播页面 &ndash;&gt;-->
     <div class="slide">
-        <div class="slideIndex"></div> <!-- 展示页码 -->
-        <a href="toXiangQing1"><img src="images/5e74787600018d4218720764.jpg"></a>           <!-- 轮播图片 -->
-    </div>
+        <div class="slideIndex"></div> <!--&lt;!&ndash; 展示页码 &ndash;&gt;-->
+        <span  name="image"></span>           <!-- &lt;!&ndash; 轮播图片 &ndash;&gt;-->
+    </div>-->
 </div> <!-- 轮播容器结束 -->
 
 <!-- 前翻页，后翻页按钮 -->
@@ -489,8 +489,45 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/index.js"></script>
 <!-- Scripts Ends -->
+
+
+
 </body>
 <script type="text/javascript">
+
+    $(function(){
+        slideshow();
+    })
+    function slideshow(){
+
+        $.ajax({
+            type:"post",
+            url:"../selectSlideshow",
+            data:{},
+            dataType:"json",
+            success:function(data) {
+
+                var lbt = "";
+                var i = 0;
+
+                $("[name=image]").each(function (){
+
+                    if (data.length>i){
+
+                        $(this).html("<a href="+data[i].url+"><img src = /"+data[i].img+"></a>")
+                    }
+                    i++;
+
+                } )
+
+
+            },
+            error:function(){
+                alert("sadasd")
+            }
+        })
+    }
+
     (function() {
         var slideshow = {};       /*创建轮播对象*/
         slideshow.slides = document.getElementsByClassName("slide");   /*操作DOM获得轮播页面组*/
@@ -614,6 +651,8 @@
                 $("ul.list").slideUp(600)//600为收缩时间
             })
     })
+
+
 
 </script>
 </html>

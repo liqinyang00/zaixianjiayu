@@ -2,10 +2,8 @@ package com.ed.model;
 
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class Slideshow implements Serializable {
+public class Slideshow {
 
     private Integer id;
 

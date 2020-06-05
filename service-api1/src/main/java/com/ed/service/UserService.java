@@ -101,6 +101,7 @@ public interface UserService {
     @RequestMapping("/selectSlideshow")
     @ResponseBody
     List<Slideshow> selectSlideshow();
+
     @RequestMapping("/userList")
     @ResponseBody
     UserEntity userList(@RequestParam String username);

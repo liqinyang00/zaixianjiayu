@@ -1,12 +1,21 @@
 package com.ed.mapper;
 
+
+import com.ed.model.User;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import com.ed.model.*;
 import org.apache.ibatis.annotations.*;
+
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
+
+
+   /* @Select("SELECT * FROM `t`")
+    List<User> text();*/
 
     @Select("select * from t_user where username=#{username}")
     UserModel Succ(String username);
@@ -30,9 +39,9 @@ public interface UserMapper {
     @Select("select * from 1908_course where courseid = #{value}")
     List<CourseEntity> selectCourseCourseid(Integer courseid);
 
-    @Insert("insert into t_shopping(shoppingcourseimg,shoppingcoursetitle,shoppingcourseid,shoppingcourseprice) " +
-            "values(#{courseEntities.courseimg},#{courseEntities.coursetitle},#{courseEntities.courseid},#{courseEntities.courseprice})")
-    void addShopping(@Param("courseEntities") CourseEntity courseEntities);
+    @Insert("insert into t_shopping(shoppingcourseimg,shoppingcoursetitle,shoppingcourseid,shoppingcourseprice,userid) " +
+            "values(#{courseEntities.courseimg},#{courseEntities.coursetitle},#{courseEntities.courseid},#{courseEntities.courseprice},#{userid})")
+    void addShopping(@Param("courseEntities") CourseEntity courseEntities,@Param("userid")Integer userid);
 
     @Delete("delete from t_shopping where shoppingid=#{shoppingid}")
     void delectShopping(Integer shoppingid);
@@ -55,8 +64,8 @@ public interface UserMapper {
             "</script>" )
     List<CourseEntity> searchCourse(CourseEntity course);
 
-    @Insert("insert into t_order (ordernumber,orderdate,ordertitle,orderprice) values (#{out_trade_no},now(),#{subject},#{total_amount})")
-    void addOrder(@Param("out_trade_no")String out_trade_no, @Param("total_amount")Double total_amount, @Param("subject")String subject);
+    @Insert("insert into t_order (ordernumber,orderdate,ordertitle,orderprice,userid) values (#{out_trade_no},now(),#{subject},#{total_amount},#{userid})")
+    void addOrder(@Param("out_trade_no")String out_trade_no, @Param("total_amount")Double total_amount, @Param("subject")String subject, @Param("userid")Integer userid);
 
     @Select("select * from t_order")
     List<Order> selectOrderList();
@@ -72,7 +81,22 @@ public interface UserMapper {
 
     @Select("select * from t_slideshow")
     List<Slideshow> selectSlideshow();
+    @Select("select * from t_user t where t.username=#{value}")
+    UserEntity userList(String username);
+
+    @Select(" select * from 1908_course c where c.coursetime BETWEEN  date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m-%d') AND SYSDATE() ORDER BY c.coursetime desc limit #{page}, #{rows} ")
+    List<CourseEntity> newteachwell(Integer page, Integer rows);
+
+    @Select(" select count(1) from 1908_course c where c.coursetime BETWEEN date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m-%d') AND SYSDATE() ORDER BY c.coursetime desc ")
+    long newteachwellCount();
+
+    @Select(" select * from  1908_course c  ORDER BY c.coursenumber DESC LIMIT 8 ")
+    List<CourseEntity> popularcoursesCount();
+
+    @Select(" select * from 1908_course c ORDER BY c.coursenumber DESC LIMIT  #{page}, #{rows} ")
+    List<CourseEntity> popularcourses(Integer page, Integer rows);
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/
+
 }

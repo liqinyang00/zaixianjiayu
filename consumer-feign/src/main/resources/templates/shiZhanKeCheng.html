@@ -150,6 +150,12 @@
                     <span>购物车</span>
                 </a>
             </li>
+            <li style="margin-top: 5px"><label th:if="${session.value!=null}">
+                <a href="/toOrder">欢迎：<label style="color: red" th:text="${session.value}"></label></a>
+            </label></li>
+            <li style="margin-top: 5px"><label th:if="${session.value==null}">
+                <a href="../toLogin">登录/注销</a>
+            </label></li>
         </ul>
     </div>
 </div>
@@ -248,6 +254,7 @@
         selectCourse();
     })
     function selectCourse(){
+
         $.ajax({
             type:"post",
             url:"../selectCourse",
@@ -261,9 +268,9 @@
                 for (var i=0;i<data.rows.length;i++){
                     dh+=' <div class="col-sm-6 col-md-3 list-item">';
                     dh+='<div class="thumbnail" style="height: 440px">';
-                    dh+='<a href="/toXiangQing2"><img src='+data.rows[i].courseimg+' width="100px" height:"100px"></a>';
+                    dh+='<a href="/toXiangQing2"><img src='+data.rows[i].courseimg+' width="100px" height="100px"></a>';
                     dh+='<div class="caption">';
-                    dh+='<h4><b class="shizan-name">'+data.rows[i].coursetitle+'</b></h4>';
+                    dh+='<a href="/toXiangQing2"><h4><b class="shizan-name">'+data.rows[i].coursetitle+'</b></h4></a>';
                     dh+='<p>收藏人数：'+data.rows[i].coursenumber+'</p>';
                     dh+='<p>'+data.rows[i].coursecontext+'</p>';
                     dh+='<p>作者：'+data.rows[i].authername+'</p>';
@@ -288,19 +295,22 @@
     }
 
     function editCourse(courseid){
+
         $.ajax({
             type:"post",
             url:"../selectCourseCourseid",
             data:{courseid:courseid},
             dataType:"json",
             success:function(data) {
-                alert("成功");
+                alert("加入购物车成功");
+            },
+            error:function(){
+                window.location.href="../toLogin";
             }
         })
     }
 
     function zhiFu(courseid){
-        alert(courseid);
         window.location.href="../zhiFu?courseid="+courseid;
     }
 

@@ -10,38 +10,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 public class UserServiceImpl implements UserService {
+
     @Resource
     private UserMapper userMapper;
 
+    /*@GetMapping("/")
+    @ResponseBody
     @Override
-    public String hello() {
-        return "成功！！！";
-    }
+    public List<User> text() {
 
-    @Override
+        return userMapper.text();
+    }*/
+
+
+    /*@Override
+    public String hello() {
+        return null;
+    }*/
+
     @RequestMapping("/success")
     @ResponseBody
-    public UserModel Succ( @RequestParam("username")  String username) {
+    @Override
+    public UserModel Succ(@RequestParam("username")  String username) {
         return userMapper.Succ(username);
     }
 
-    @Override
+
     @RequestMapping("/reg")
     @ResponseBody
+    @Override
     public UserModel reg( @RequestParam("username") String username) {
         return userMapper.reg(username);
     }
+
     @RequestMapping("/reg1")
     @ResponseBody
     public void addUser  (@RequestBody UserModel user) {
         userMapper.addUser(user);
     }
 
-    @Override
+
     @RequestMapping("/phoneLogin")
     @ResponseBody
+    @Override
     public UserModel fingName(@RequestParam String phone) {
         return userMapper.fingName(phone);
     }
@@ -61,10 +74,10 @@ public class UserServiceImpl implements UserService {
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
     @Override
-    public String selectCourseCourseid(Integer courseid) {
+    public String selectCourseCourseid(Integer courseid,Integer userid) {
         try{
             CourseEntity courseEntities =  userMapper.selectCourseCourseid(courseid).get(0);
-            userMapper.addShopping(courseEntities);
+            userMapper.addShopping(courseEntities,userid);
             return  "100";
         }catch (Exception e){
             e.printStackTrace();
@@ -109,8 +122,8 @@ public class UserServiceImpl implements UserService {
     @RequestMapping("/zhiFu2")
     @ResponseBody
     @Override
-    public void addOrder(String out_trade_no, Double total_amount, String subject) {
-        userMapper.addOrder(out_trade_no,total_amount,subject);
+    public void addOrder(String out_trade_no, Double total_amount, String subject,Integer userid) {
+        userMapper.addOrder(out_trade_no,total_amount,subject,userid);
     }
 
     @PostMapping("/orderList")
@@ -144,6 +157,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Slideshow> selectSlideshow() {
         return userMapper.selectSlideshow();
+    }
+    @RequestMapping("/userList")
+    @ResponseBody
+    @Override
+    public UserEntity userList(String username) {
+        return userMapper.userList(username);
+    }
+
+    @RequestMapping("/newteachwell")
+    @ResponseBody
+    @Override
+    public Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+
+        long coursetotal = userMapper.newteachwellCount();
+        List<CourseEntity> courseList = userMapper.newteachwell((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
+    }
+
+    @RequestMapping("/popularcourses")
+    @ResponseBody
+    @Override
+    public Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+
+        List<CourseEntity> list = userMapper.popularcoursesCount();
+
+        long coursetotal = list.size();
+
+
+        List<CourseEntity> courseList = userMapper.popularcourses((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
     }
 
    /* @RequestMapping("/toShiZhanKeCheng")

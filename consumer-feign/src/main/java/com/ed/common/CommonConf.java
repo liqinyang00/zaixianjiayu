@@ -1,5 +1,8 @@
 package com.ed.common;
 
+
+
+
 public class  CommonConf {
 
    public  static  final  String TEMPLATEID="14888129";

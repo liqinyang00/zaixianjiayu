@@ -16,7 +16,7 @@ public class AlipayConfig{
     /**
      * 返回的时候此页面不会返回到用户页面，只会执行你写到控制器里的地址
      */
-    public static String notify_url = "http://localhost:8080/notify_url";
+    public static String notify_url = "http://localhost:8070/notify_url";
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     /**
      * 此页面是同步返回用户页面，也就是用户支付后看到的页面，上面的notify_url是异步返回商家操作，谢谢

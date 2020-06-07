@@ -42,7 +42,7 @@ public interface UserService {
 
     @PostMapping("/selectShopping")
     @ResponseBody
-    Map<String, Object> selectShopping(@RequestParam Integer page,@RequestParam Integer rows);
+    Map<String, Object> selectShopping(@RequestParam Integer page, @RequestParam Integer rows,@RequestParam Integer userid);
 
     @RequestMapping("/zhiFu")
     @ResponseBody
@@ -74,6 +74,8 @@ public interface UserService {
     @RequestMapping("/userList")
     @ResponseBody
     UserEntity userList(@RequestParam String username);
+
+
 
     /*@RequestMapping("/toShiZhanKeCheng")
     List<TypeEntity> selectCourseType();*/

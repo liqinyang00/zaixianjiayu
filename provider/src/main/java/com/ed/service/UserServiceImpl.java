@@ -24,12 +24,11 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
 
-    @GetMapping("/")
-    @ResponseBody
-    @Override
-    public List<User> text() {
 
-        return userMapper.text();
+
+    @Override
+    public String hello() {
+        return null;
     }
 
     @Override
@@ -77,6 +76,7 @@ public class UserServiceImpl implements UserService {
         try{
             CourseEntity courseEntities =  userMapper.selectCourseCourseid(courseid).get(0);
             userMapper.addShopping(courseEntities,userid);
+            userMapper.updateCourse(courseid);
             return  "100";
         }catch (Exception e){
             e.printStackTrace();
@@ -95,9 +95,9 @@ public class UserServiceImpl implements UserService {
     @PostMapping("/selectShopping")
     @ResponseBody
     @Override
-    public Map<String, Object> selectShopping(Integer page, Integer rows) {
+    public Map<String, Object> selectShopping(Integer page, Integer rows,Integer userid) {
         long shoppingtotal = userMapper.selectShoppingCount();
-        List<ShoppingEntity> shoppingList = userMapper.selectShopping((page-1)*rows,rows);
+        List<ShoppingEntity> shoppingList = userMapper.selectShopping((page-1)*rows,rows,userid);
         Map<String,Object> dataMap = new HashMap<String,Object>();
         dataMap.put("total", shoppingtotal);
         dataMap.put("rows", shoppingList);
@@ -163,6 +163,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity userList(String username) {
         return userMapper.userList(username);
     }
+
 
    /* @RequestMapping("/toShiZhanKeCheng")
     @Override

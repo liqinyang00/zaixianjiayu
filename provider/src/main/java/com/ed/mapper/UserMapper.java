@@ -14,9 +14,6 @@ import java.util.List;
 public interface UserMapper {
 
 
-    @Select("SELECT * FROM `t`")
-    List<User> text();
-
     @Select("select * from t_user where username=#{username}")
     UserModel Succ(String username);
 
@@ -49,8 +46,8 @@ public interface UserMapper {
     @Select("select count(1) from t_shopping")
     long selectShoppingCount();
 
-    @Select("select * from t_shopping limit #{page},#{rows}")
-    List<ShoppingEntity> selectShopping(@Param("page") Integer page, @Param("rows")Integer rows);
+    @Select("select * from t_shopping where userid =#{userid} limit #{page},#{rows}")
+    List<ShoppingEntity> selectShopping(@Param("page") Integer page, @Param("rows")Integer rows,@Param("userid")Integer userid);
 
     @Select("select c.courseid,c.coursetitle,c.courseprice from 1908_course c where c.courseid=#{value}")
     CourseEntity getOrderById(String courseid);
@@ -64,7 +61,7 @@ public interface UserMapper {
             "</script>" )
     List<CourseEntity> searchCourse(CourseEntity course);
 
-    @Insert("insert into t_order (ordernumber,orderdate,ordertitle,orderprice,userid) values (#{out_trade_no},now(),#{subject},#{total_amount},#{userid})")
+    @Insert("insert into t_order (ordernumber,orderdate,ordertitle,orderprice,userid,status) values (#{out_trade_no},now(),#{subject},#{total_amount},#{userid},2)")
     void addOrder(@Param("out_trade_no")String out_trade_no, @Param("total_amount")Double total_amount, @Param("subject")String subject, @Param("userid")Integer userid);
 
     @Select("select * from t_order")
@@ -82,6 +79,9 @@ public interface UserMapper {
     List<Slideshow> selectSlideshow();
     @Select("select * from t_user t where t.username=#{value}")
     UserEntity userList(String username);
+    @Update("UPDATE 1908_course c set c.coursenumber =c.coursenumber+1 where c.courseid = #{value}")
+    void updateCourse(Integer courseid);
+
 
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/

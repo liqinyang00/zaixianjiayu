@@ -1,8 +1,11 @@
 package com.ed.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ed.common.CommonConf;
-import com.ed.model.User;
 import com.ed.service.UserService;
 
 
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.util.StringUtils;
@@ -48,8 +52,6 @@ public class UserController {
     private RedisTemplate<String, String> redisTemplate;
 
 
-    @Autowired
-    private RedisUtil redisUtil;
 
 
 
@@ -69,7 +71,7 @@ public class UserController {
 
 
 
-}
+
 
     @RequestMapping("/toLogin")
     public String toLogin() {
@@ -314,16 +316,29 @@ public class UserController {
     @ResponseBody
     public String selectCourseCourseid(@RequestParam Integer courseid,HttpServletRequest request){
         String username = (String )request.getSession().getAttribute("username");
-        UserEntity user = userService.userList(username);
-        Integer userid = user.getUserid();
-        return userService.selectCourseCourseid(courseid,userid);
+        if (username != null) {
+            UserEntity user = userService.userList(username);
+            Integer userid = user.getUserid();
+            return userService.selectCourseCourseid(courseid, userid);
+        }else {
+            return null;
+        }
     }
 
     @PostMapping("/selectShopping")
     @ResponseBody
-    public  Map<String, Object> selectShopping(@RequestParam Integer page,@RequestParam Integer rows){
-        Map<String, Object> resultMap = userService.selectShopping(page, rows);
-        return resultMap;
+    public Map<String, Object> selectShopping(@RequestParam Integer page,@RequestParam Integer rows,HttpServletRequest request){
+        String username = (String )request.getSession().getAttribute("username");
+        if (username != null){
+            UserEntity user = userService.userList(username);
+            Integer userid = user.getUserid();
+            Map<String, Object> resultMap =  userService.selectShopping(page, rows,userid);
+            return resultMap;
+        }else {
+            return null;
+        }
+
+
     }
 
     @PostMapping("/delectShopping")
@@ -375,39 +390,45 @@ public class UserController {
     public String zhiFu(@RequestParam String courseid,HttpServletRequest request) throws Exception{
         CourseEntity course = userService.getOrderById(courseid);
         String username = (String )request.getSession().getAttribute("username");
-        UserEntity user = userService.userList(username);
-        Integer userid = user.getUserid();
-        //获得初始化的AlipayClient
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
-        //设置请求参数
-        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-        alipayRequest.setReturnUrl(AlipayConfig.return_url);
-        alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
-        //商户订单号，商户网站订单系统中唯一订单号，必填
-        String out_trade_no = UUID.randomUUID().toString().replace("-", "").toUpperCase();
-        //Integer out_trade_no = course.getCourseid();
-        //付款金额，必填
-        Double total_amount = course.getCourseprice();
-        //订单名称，必填
-        String subject = course.getCoursetitle();
+        if(username != null){
+           UserEntity user = userService.userList(username);
+           Integer userid = user.getUserid();
+           //获得初始化的AlipayClient
+           AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
+           //设置请求参数
+           AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+           alipayRequest.setReturnUrl(AlipayConfig.return_url);
+           alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+           //商户订单号，商户网站订单系统中唯一订单号，必填
+            String dateTime = String.valueOf(new Date().getTime());
+           String out_trade_no = dateTime;
+           //Integer out_trade_no = course.getCourseid();
+           //付款金额，必填
+           Double total_amount = course.getCourseprice();
+           //订单名称，必填
+           String subject = course.getCoursetitle();
 
-        redisUtil.del(RedisConstant.ORDER_LIST);
-        userService.addOrder(out_trade_no,total_amount,subject,userid);
+           redisUtil.del(RedisConstant.ORDER_LIST);
+           userService.addOrder(out_trade_no, total_amount, subject, userid);
 
 
        /* //商品描述，可空
         String body = "用户订购商品个数：" + order.getBuyCount();*/
-        // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
-        String timeout_express = "1c";
-        alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
-                + "\"total_amount\":\""+ total_amount +"\","
-                + "\"subject\":\""+ subject +"\","
-                /*  + "\"body\":\""+ body +"\","*/
-                + "\"timeout_express\":\""+ timeout_express +"\","
-                + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-        //请求
-        String result = alipayClient.pageExecute(alipayRequest).getBody();
-        return result;
+           // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
+           String timeout_express = "1c";
+           alipayRequest.setBizContent("{\"out_trade_no\":\"" + out_trade_no + "\","
+                   + "\"total_amount\":\"" + total_amount + "\","
+                   + "\"subject\":\"" + subject + "\","
+                   /*  + "\"body\":\""+ body +"\","*/
+                   + "\"timeout_express\":\"" + timeout_express + "\","
+                   + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+           //请求
+           String result = alipayClient.pageExecute(alipayRequest).getBody();
+           return result;
+        }else{
+           return null;
+        }
+
     }
 
     /**
@@ -420,6 +441,10 @@ public class UserController {
     public String Return_url() throws InterruptedException {
 
         return "chenggong";
+    }
+    @RequestMapping("notify_url")
+    public String notify_url(){
+        return "login";
     }
 
     @GetMapping("/toOrder")
@@ -442,7 +467,12 @@ public class UserController {
     @RequestMapping("/selectSlideshow")
     @ResponseBody
     public List<Slideshow> selectSlideshow(){
-       return userService.selectSlideshow();
+        List<Slideshow> slideshowList= (List<Slideshow>) redisUtil.get(RedisConstant.SLIDESHOW_LIST);
+        if (slideshowList == null){
+            slideshowList = userService.selectSlideshow();
+            redisUtil.set(RedisConstant.SLIDESHOW_LIST,slideshowList);
+        }
+        return slideshowList;
     }
 
 }

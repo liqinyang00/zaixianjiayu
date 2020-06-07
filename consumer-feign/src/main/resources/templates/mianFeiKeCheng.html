@@ -173,6 +173,7 @@
                 alert(arr)*/
                 var dh = "";
                 for (var i=0;i<data.rows.length;i++){
+
                     dh+=' <div class="col-sm-6 col-md-3 list-item">';
                     dh+='<div class="thumbnail" style="height: 400px">';
                     dh+='<a href="/toXiangQing3"><img src='+data.rows[i].courseimg+' width="100px" height:"100px"></a>';
@@ -183,7 +184,7 @@
                     dh+='<p>作者：'+data.rows[i].authername+'</p>';
                     /*dh+='<p style="color: red">￥'+data.rows[i].courseprice+'</p>';*/
                     dh+='<p>';
-                    dh+='<a href="/toXiangQing1" class="btn btn-primary" role="button">';
+                    dh+='<a href="javascript:toXiangQing1('+data.rows[i].courseid+')" class="btn btn-primary" role="button">';
                     dh+='查看详情';
                     dh+='</a>';
                     dh+='</p>';
@@ -196,5 +197,10 @@
 
         });
     }
+
+    function toXiangQing1(id) {
+        location.href="../toXiangQing1?courseid="+id;
+    }
+
 </script>
 </html>

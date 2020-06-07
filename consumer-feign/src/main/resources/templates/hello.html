@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Metas -->
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -13,6 +12,18 @@
     <link href="css/slick.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css">
+    <script src="../js/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-treeview/bootstrap-treeview.min.css">
+    <script src="../js/bootStrap-addTabs/bootstrap.addtabs.js"></script>
+    <link rel="stylesheet" href="../js/bootStrap-addTabs/bootstrap.addtabs.css">
+
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
     <!-- Document Title -->
     <meta charset="utf-8">
     <title>慕课网-程序员的梦工厂</title>
@@ -132,6 +143,14 @@
             margin-top: -12px;
             margin-left: 10px;
         }
+        .list-item {
+            width: 25% !important;
+        }
+        .thumbnail > img, .thumbnail a > img {
+            width: 100%;
+            height: 148px;
+            border-radius: 10px;
+        }
 
     </style>
 </head>
@@ -186,12 +205,15 @@
 
         </ul>
     </div>
+
+</div>
+<br><br><br><br><br>
+<!-- 轮播容器开始 -->
+<div class="slideshow-container" style="margin-top: -80px">
+
 </div><br><br><br><br><br>
-
-
-
-
 <div class="slideshow-container" style="margin-top: -80px"> <!-- 轮播容器开始 -->
+
     <!-- 轮播页面 -->
 
     <div class="slide">
@@ -218,7 +240,7 @@
     <div class="slide">
         <div class="slideIndex"></div> <!--&lt;!&ndash; 展示页码 &ndash;&gt;-->
         <span  name="image"></span>           <!-- &lt;!&ndash; 轮播图片 &ndash;&gt;-->
-    </div>-->
+    </div>
 </div> <!-- 轮播容器结束 -->
 
 <!-- 前翻页，后翻页按钮 -->
@@ -279,19 +301,29 @@
         </div>
     </div>
 </section>
-<div align="center" style="margin-top: 40px">
-    <a href="/toShiZhanKeCheng"><img src="/images/777.jpg" style="width: 1200px" alt=""></a>
-</div><br><br><br><br><br><br><br><br>
+
 <section class="about">
     <div class="container">
         <div class="row">
+            <font size="6px" face="粗体">新上好课</font>
+            <div class="Newteachwell">
+
+                <span id="Newteachwell"></span>
+            </div>
+            <br/><br/><br/><br/>
+            <font size="6px" face="粗体">热销课程</font>
+            <div class="Popularcourses">
+
+                <span id="Popularcourses"></span>
+            </div>
+            <br/><br/><br/><br/>
             <div class="col-12 col-sm-12 col-lg-6">
                 <img src="images/aboutimg.svg" alt="">
             </div>
             <div class="col-12 col-sm-12 col-lg-6">
                 <h2>Some About Us</h2>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;慕课网是垂直的互联网IT技能免费学习网站。以独家视频教程、在线编程工具、学习计划、问答社区为核心特色。在这里，你可以找到最好的互联网技术牛人，也可以通过免费的在线公开视频课程学习国内领先的互联网IT技术。<br>
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;慕课网课程涵盖前端开发、PHP、Html5、Android、iOS、Swift等IT前沿技术语言，包括基础课程、实用案例、高级分享三大类型，适合不同阶段的学习人群。以纯干货、短视频的形式为平台特点，为在校学生、职场白领提供了一个迅速提升技能、共同分享进步的学习平台。</p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;慕课网课程涵盖前端开发、PHP、Html5、Android、iOS、Swift等IT前沿技术语言，包括基础课程、实用案例、高级分享三大类型，适合不同阶段的学习人群。以纯干货、短视频的形式为平台特点，为在校学生、职场白领提供了一个迅速提升技能、共同分享进步的学习平台。</p>
             </div>
         </div>
     </div>
@@ -641,6 +673,74 @@
         /*调用*/
         slideshow.init();
     })();
+
+    $(function(){
+        selectCourse();
+        Popularcourses();
+    })
+    function selectCourse(){
+        $.ajax({
+            type:"post",
+            url:"../newteachwell",
+            data:{page:1,rows:8},
+            dataType:"json",
+            success:function(data) {
+                //alert(data.rows);
+                /*var arr = JSON.stringify(data);
+                alert(arr)*/
+
+                var dh2 = "";
+                for (var i=0;i<data.rows.length;i++){
+                    /*alert(data.rows[i].coursetitle);*/
+                    dh2+=' <div class="col-sm-20 col-md-10 list-item">';
+                    dh2+='<div class="thumbnail" style="height: 330px">';
+                    dh2+='<a href="/toXiangQing2"><img src='+data.rows[i].courseimg+' width="200px" height="330px"></a>';
+                    dh2+='<div class="caption">';
+                    dh2+='<a href="/toXiangQing2"><h4><b class="shizan-name">'+data.rows[i].coursetitle+'</b></h4></a>';
+                    dh2+='<p>收藏人数：'+data.rows[i].coursenumber+'</p>';
+                    dh2+='<p>'+data.rows[i].coursecontext+'</p>';
+                    dh2+='<p>作者：'+data.rows[i].authername+'  ￥'+data.rows[i].courseprice+'</p>';
+                    /*dh2+='<p style="color: red">￥'+data.rows[i].courseprice+'</p>';*/
+                    dh2+='</div>';
+                    dh2+='</div>';
+                    dh2+='</div>';
+                }
+                $("#Newteachwell").html(dh2);
+            }
+        });
+    }
+
+    function Popularcourses(){
+        $.ajax({
+            type:"post",
+            url:"../popularcourses",
+            data:{page:1,rows:8},
+            dataType:"json",
+            success:function(data) {
+                //alert(data.rows);
+                /*var arr = JSON.stringify(data);
+                alert(arr)*/
+
+                var dh3 = "";
+                for (var i=0;i<data.rows.length;i++){
+                    /*alert(data.rows[i].coursetitle);*/
+                    dh3+=' <div class="col-sm-20 col-md-10 list-item">';
+                    dh3+='<div class="thumbnail1" style="height: 330px">';
+                    dh3+='<a href="/toXiangQing2"><img src='+data.rows[i].courseimg+' width="200px" height="330px"></a>';
+                    dh3+='<div class="caption">';
+                    dh3+='<a href="/toXiangQing2"><h4><b class="shizan-name">'+data.rows[i].coursetitle+'</b></h4></a>';
+                    dh3+='<p>收藏人数：'+data.rows[i].coursenumber+'</p>';
+                    dh3+='<p>'+data.rows[i].coursecontext+'</p>';
+                    dh3+='<p>作者：'+data.rows[i].authername+'  ￥'+data.rows[i].courseprice+'</p>';
+                    /*dh2+='<p style="color: red">￥'+data.rows[i].courseprice+'</p>';*/
+                    dh3+='</div>';
+                    dh3+='</div>';
+                    dh3+='</div>';
+                }
+                $("#Popularcourses").html(dh3);
+            }
+        });
+    }
 
 
     $(function(){

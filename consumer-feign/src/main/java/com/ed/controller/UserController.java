@@ -241,19 +241,26 @@ public class UserController {
         mav.addObject("name",name);//
         // 传值
         mav.setViewName("Search for courses2");//返回页面searchCourse2
-
         return mav;
     }
-
-
+    
     @GetMapping("/toMianFeiKeCheng")
     public String toMianFeiKeCheng(){
         return "mianFeiKeCheng";
     }
 
-    @GetMapping("/toXiangQing1")
-    public String toXiangQing1(){
-        return "xiangQing1";
+    @RequestMapping("/toXiangQing1")
+    @ResponseBody
+    public ModelAndView toXiangQing1(Integer courseid){
+
+        ModelAndView mav = new ModelAndView();
+
+        CourseEntity course = userService.selectCourseList(courseid);
+
+        mav.addObject("course",course);//
+        // 传值
+        mav.setViewName("XiangQing1");//返回页面searchCourse2
+        return mav;
     }
 
     @GetMapping("/toXiangQing2")
@@ -443,6 +450,15 @@ public class UserController {
     public List<Slideshow> selectSlideshow(){
        return userService.selectSlideshow();
     }
+
+
+   /* @ResponseBody
+    public  selectCourseList(Integer courseid){
+
+        return
+    }*/
+
+
 
 }
 

@@ -95,6 +95,12 @@ public interface UserMapper {
     @Select(" select * from 1908_course c ORDER BY c.coursenumber DESC LIMIT  #{page}, #{rows} ")
     List<CourseEntity> popularcourses(Integer page, Integer rows);
 
+    @Select(" select * from 1908_course where courseid = #{courseid} ")
+    CourseEntity selectCourseList(Integer courseid);
+
+  /*  @Select(" select * from  1908_course where courseid = #{courseid}")
+    List<CourseEntity> toXiangQing1(Integer courseid);*/
+
     /*@Select(" select * from 1908_course_type ")
     List<TypeEntity> selectCourseType();*/
 

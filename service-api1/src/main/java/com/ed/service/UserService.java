@@ -105,6 +105,10 @@ public interface UserService {
     @ResponseBody
     UserEntity userList(@RequestParam String username);
 
+    @RequestMapping("/selectCourseList")
+    @ResponseBody
+    CourseEntity selectCourseList(@RequestParam Integer courseid);
+
     /*@RequestMapping("/toShiZhanKeCheng")
     List<TypeEntity> selectCourseType();*/
 }

@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
+    <link rel="stylesheet" th:href="@{../css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{../css/bootstrap-table.css}" />
     <!-- Metas -->
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="" />
     <!-- Links -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/icofont.min.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/slick.css" rel="stylesheet" />
-    <link href="css/main.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/icofont.min.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/slick.css" rel="stylesheet" />
+    <link href="../css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css">
 
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap3/js/bootstrap.js"></script>
@@ -61,44 +64,49 @@
             color: white;
             text-decoration: none;
         }
-        .pinjie2 img{
-            margin-top: -160px;
-            margin-left: 180px;
+        .kecheng ul{
+             width: 2000px;
+             height: 20px;
+             margin-left: 180px;
+         }
+        .nav li{
+            display: none;
+            width: 25%;
+            text-decoration: none;
+
         }
-        .pj2 img{
-            margin-top: -76px;
-            margin-left: 300px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            height: 50px;
+        .nav li:hover{
+            background-color: lightblue;
         }
-        .pj3 ul{
-            margin-top: -15px;
-            margin-left: 5px;
+        section{
+            height: 300px;
         }
-        .pj3 a{
-            color: #E0E0E0;
-            font-size: 12px;
-            font-family: 仿宋;
+        /*.kecheng li{
+            list-style-type: none;
+            float: left;
+            line-height: 30px;
+            font-size: 16px;
+            color: #000000;
+            margin-right:50px;
         }
-        .pj3 a:hover{
-            color: white;
-        }
-        .daohangye div{
-            width: 350px;
-            height: 350px;
-            margin: 10px 10px;
-        }
+        .kecheng a:hover{
+            color: #000000;
+            text-decoration: none;
+        }*/
+
 
     </style>
 </head>
 <body>
 <div>
     <a href="#"><img src="/images/top22.jpg" style="width: 2000px" alt=""></a>
+
 </div>
 
+
+
 <div id="header">
-    <div class="page-container clearfix" id="nav"  style="background-color: #0D171F !important;">
+    <div class="page-container clearfix" style="background-color: #0D171F !important;">
 
         <ul class=daohang>
             <li style="margin-top: 5px"><a href="/toMain">慕课网首页</a></li>
@@ -122,14 +130,81 @@
     </div>
 </div>
 
+<!--导航栏部分HTML代码-->
+<nav id="nav" style="background-color: black">
+     <ul>
+         <li class="act">课程介绍</li>
+         <li>课程章节</li>
+
+     </ul>
+</nav>
+<!--内容部分HTML代码-->
+<div id="container">
+    <section class="tab" >
+        <!--<img src="images/1587670312.jpg">-->
+        <input type="text" th:value="${course.coursetitle}" >
+        <table>
+            <tr>
+                <th th:value="${course.coursetitle}"></th>
+            </tr>
+        </table>
+
+    </section>
+    <section class="tab" >
+
+        7894656213321654564981561984hjvhjbvghcvvgycgh ghcgxg bcghc
+    </section>
+    <!--<div class="footer" style="margin-top: 110px;">
+        <img src="images/gwcFoot.jpg" width="100%">
+    </div>-->
+</div>
+
+<!--<div class="kecheng">
+    <div class="page-container clearfix" style="background-color: #fefff4 !important;">
+
+        <ul>
+            <li style="margin-top: 5px"><a href="/toMain">课程介绍</a></li>
+            <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">课程章节</a></li>
+
+        </ul>
+    </div>
+
+</div>
 <div>
     <img src="images/1587670312.jpg">
-</div>
+</div>-->
 
-<div class="footer" style="margin-top: -60px;">
-    <img src="images/gwcFoot.jpg" width="100%">
-</div>
 
+<script>
+
+    window.onload=function () {
+        //获取 li 也就是选项卡选项tab
+        var nav=document.getElementById('nav');
+        var oNav=nav.getElementsByTagName('li');
+        //获取 包裹在container里面的section（内容）
+        var container=document.getElementById('container');
+        var oDiv=container.getElementsByClassName('tab');
+        //使用 循环依次得到li
+        for(var i=0;i<oNav.length;i++){
+            oNav[i].index=i;
+            //每一次得到li后执行鼠标点击操作则触发函数function
+            oNav[i].onclick=function () { //此处除了可以使用onclick，还可以使用onmouseover
+                //在li的个数内依次展示内容
+                for(var i=0;i<oNav.length;i++){
+                    oNav[i].className='';
+                    oDiv[i].style.display="none";
+                }
+                this.className='act';
+                oDiv[this.index].style.display="block"
+            }
+            for(var m=1;m<oNav.length;m++){
+                oNav[m].className='';
+                oDiv[m].style.display="none";
+            }
+        }
+    };
+
+</script>
 </body>
 
 </html>

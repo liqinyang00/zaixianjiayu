@@ -165,6 +165,19 @@ public class UserServiceImpl implements UserService {
         return userMapper.userList(username);
     }
 
+    @RequestMapping("/selectCourseList")
+    @ResponseBody
+    @Override
+    public CourseEntity selectCourseList(@RequestParam Integer courseid) {
+        return userMapper.selectCourseList(courseid);
+    }
+
+    /* @Override
+     public List<CourseEntity> toXiangQing1(Integer courseid) {
+
+         return userMapper.toXiangQing1(courseid);
+     }
+ */
     @RequestMapping("/newteachwell")
     @ResponseBody
     @Override

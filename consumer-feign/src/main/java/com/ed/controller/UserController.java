@@ -5,9 +5,10 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ed.common.CommonConf;
+import com.ed.service.UserService;
+
 import com.ed.model.*;
 import com.ed.util.CheckImgUtil;
-import com.ed.service.*;
 import com.ed.util.CheckSumBuilder;
 import com.ed.util.HttpClientUtil;
 import com.ed.utils.AlipayConfig;
@@ -16,29 +17,24 @@ import com.ed.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
-
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-
 import java.util.concurrent.TimeUnit;
 
 @Controller
 public class UserController {
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -53,32 +49,19 @@ public class UserController {
         request.getSession().setAttribute("value", username);
         return "hello";
     }
-
     @RequestMapping("/toLogin")
     public String toLogin() {
         return "login";
     }
-
     @GetMapping("/toRegister")
     public String toRegister() {
-
         return "register";
     }
-
     @RequestMapping("getCode")
     //验证码
     public void getCode(HttpServletRequest request, HttpServletResponse response) {
-
         CheckImgUtil.buildCheckImg(request, response);
     }
-
-   /* @GetMapping("/session")
-    public String session(HttpServletRequest request,HttpServletResponse response){
-      *//*  String username = (String) request.getSession().getAttribute("username");
-        request.getSession().setAttribute("value", username);*//*
-        return "hello";
-    }*/
-
     //登录
     @RequestMapping("/success")
     @ResponseBody
@@ -107,7 +90,6 @@ public class UserController {
             mape.put("cd", 4);
             mape.put("msg", "验证码错误");
         }
-
         return mape;
     }
 
@@ -149,7 +131,6 @@ public class UserController {
             HashMap<String, Object> params = new HashMap<>();
             params.put("mobile", phone);
             params.put("authCode", authCode);
-
             HashMap<String, Object> headerParam = new HashMap<>();
             headerParam.put("Content-Type", CommonConf.CONTENT_TYPE);
             headerParam.put("AppKey", CommonConf.APP_KEY);
@@ -159,7 +140,6 @@ public class UserController {
             String resultJson = HttpClientUtil.post3(CommonConf.SERVER_URL, params, headerParam);
             JSONObject parseObject = JSONObject.parseObject(resultJson);
             int code = parseObject.getIntValue("code");
-
             if (code == 200) {
                 redisTemplate.opsForValue().set(CommonConf.SMS_CODE + phone, String.valueOf(authCode), 5, TimeUnit.MINUTES);
                 redisTemplate.opsForValue().set(CommonConf.SMS_LOCK + phone, "LOCK", 1, TimeUnit.MINUTES);
@@ -171,19 +151,16 @@ public class UserController {
                 result.put("msg", "发送失败");
                 return result;
             }
-
         } catch (Exception e) {
             result.put("code", 1);
             result.put("msg", "发送失败");
             return result;
         }
-
     }
 
     @RequestMapping("/phoneLogin")
     @ResponseBody
     public HashMap<String, Object> phoneLogin(String phone, String phoneCode, HttpServletRequest request) {
-
         HashMap<String, Object> result = new HashMap<>();
         //判断缓存中是否有该账号的验证码
         if (!redisTemplate.hasKey(CommonConf.SMS_CODE + phone)) {
@@ -212,11 +189,10 @@ public class UserController {
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         String username = (String) request.getSession().getAttribute("username");
-
         if (username != null) {
             request.getSession().removeAttribute("username");
         }
-        return "login";
+        return "redirect:toMain";
     }
 
     @GetMapping("/toShoppingCart")
@@ -226,34 +202,21 @@ public class UserController {
 
     @GetMapping("/toShiZhanKeCheng")
     public String toShiZhanKeCheng(){
-
-        /*ModelAndView mav = new ModelAndView();
-        List<TypeEntity> typeList = userService.selectCourseType();
-        mav.addObject("typeList", typeList);
-        mav.setViewName("shiZhanKeCheng");*/
         return "shiZhanKeCheng";
     }
 
     @GetMapping("/selectCourseType")
     public ModelAndView selectCourseType(String name){
-
         ModelAndView mav = new ModelAndView();
         mav.addObject("name",name);//
         // 传值
         mav.setViewName("Search for courses2");//返回页面searchCourse2
-
         return mav;
     }
-
 
     @GetMapping("/toMianFeiKeCheng")
     public String toMianFeiKeCheng(){
         return "mianFeiKeCheng";
-    }
-
-    @GetMapping("/toXiangQing1")
-    public String toXiangQing1(){
-        return "xiangQing1";
     }
 
     @GetMapping("/toXiangQing2")
@@ -294,16 +257,28 @@ public class UserController {
     @ResponseBody
     public String selectCourseCourseid(@RequestParam Integer courseid,HttpServletRequest request){
         String username = (String )request.getSession().getAttribute("username");
-        UserEntity user = userService.userList(username);
-        Integer userid = user.getUserid();
-        return userService.selectCourseCourseid(courseid,userid);
+        if (username != null) {
+            UserEntity user = userService.userList(username);
+            Integer userid = user.getUserid();
+            return userService.selectCourseCourseid(courseid, userid);
+        }else {
+            return null;
+        }
     }
 
     @PostMapping("/selectShopping")
     @ResponseBody
-    public  Map<String, Object> selectShopping(@RequestParam Integer page,@RequestParam Integer rows){
-        Map<String, Object> resultMap = userService.selectShopping(page, rows);
-        return resultMap;
+    public Map<String, Object> selectShopping(@RequestParam Integer page,@RequestParam Integer rows,HttpServletRequest request){
+        String username = (String )request.getSession().getAttribute("username");
+        if (username != null){
+            UserEntity user = userService.userList(username);
+            Integer userid = user.getUserid();
+            Map<String, Object> resultMap =  userService.selectShopping(page, rows,userid);
+            return resultMap;
+        }else {
+            return null;
+        }
+
     }
 
     @PostMapping("/delectShopping")
@@ -332,61 +307,63 @@ public class UserController {
         }else {
             return null;
         }
+
     }
 
     @PostMapping("/searchCourse2")
     @ResponseBody
     public List<CourseEntity> searchCourse2(CourseEntity course){
         if(!StringUtils.isEmpty(course.getName())){
-
             List<CourseEntity> courseEntities = userService.selectCourseType(course.getName());
-           /* List<CourseEntity> courseEntities = userService.searchCourse(course);*/
+            /* List<CourseEntity> courseEntities = userService.searchCourse(course);*/
             return courseEntities;
         }else {
             return null;
         }
+
     }
 
     @RequestMapping(value = {"/zhiFu","/zhifu2","/userList"})
     @ResponseBody
     public String zhiFu(@RequestParam String courseid,HttpServletRequest request) throws Exception{
         CourseEntity course = userService.getOrderById(courseid);
-
         String username = (String )request.getSession().getAttribute("username");
-        UserEntity user = userService.userList(username);
-        Integer userid = user.getUserid();
-
-        //获得初始化的AlipayClient
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
-        //设置请求参数
-        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-        alipayRequest.setReturnUrl(AlipayConfig.return_url);
-        alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
-        //商户订单号，商户网站订单系统中唯一订单号，必填
-        String out_trade_no = UUID.randomUUID().toString().replace("-", "").toUpperCase();
-        //Integer out_trade_no = course.getCourseid();
-        //付款金额，必填
-        Double total_amount = course.getCourseprice();
-        //订单名称，必填
-        String subject = course.getCoursetitle();
-
-        redisUtil.del(RedisConstant.ORDER_LIST);
-        userService.addOrder(out_trade_no,total_amount,subject,userid);
-
-
+        if(username != null){
+            UserEntity user = userService.userList(username);
+            Integer userid = user.getUserid();
+            //获得初始化的AlipayClient
+            AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
+            //设置请求参数
+            AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+            alipayRequest.setReturnUrl(AlipayConfig.return_url);
+            alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+            //商户订单号，商户网站订单系统中唯一订单号，必填
+            String dateTime = String.valueOf(new Date().getTime());
+            String out_trade_no = dateTime;
+            //Integer out_trade_no = course.getCourseid();
+            //付款金额，必填
+            Double total_amount = course.getCourseprice();
+            //订单名称，必填
+            String subject = course.getCoursetitle();
+            redisUtil.del(RedisConstant.ORDER_LIST);
+            userService.addOrder(out_trade_no, total_amount, subject, userid);
        /* //商品描述，可空
         String body = "用户订购商品个数：" + order.getBuyCount();*/
-        // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
-        String timeout_express = "1c";
-        alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
-                + "\"total_amount\":\""+ total_amount +"\","
-                + "\"subject\":\""+ subject +"\","
-                /*  + "\"body\":\""+ body +"\","*/
-                + "\"timeout_express\":\""+ timeout_express +"\","
-                + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-        //请求
-        String result = alipayClient.pageExecute(alipayRequest).getBody();
-        return result;
+            // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
+            String timeout_express = "1c";
+            alipayRequest.setBizContent("{\"out_trade_no\":\"" + out_trade_no + "\","
+                    + "\"total_amount\":\"" + total_amount + "\","
+                    + "\"subject\":\"" + subject + "\","
+                    /*  + "\"body\":\""+ body +"\","*/
+                    + "\"timeout_express\":\"" + timeout_express + "\","
+                    + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+            //请求
+            String result = alipayClient.pageExecute(alipayRequest).getBody();
+            return result;
+        }else{
+            return "未登录.....";
+        }
+
     }
 
     /**
@@ -397,8 +374,11 @@ public class UserController {
      */
     @RequestMapping("return_url")
     public String Return_url() throws InterruptedException {
-
         return "chenggong";
+    }
+    @RequestMapping("notify_url")
+    public String notify_url(){
+        return "login";
     }
 
     @GetMapping("/toOrder")
@@ -418,13 +398,22 @@ public class UserController {
 
     }
 
+    @RequestMapping("/selectSlideshow")
+    @ResponseBody
+    public List<Slideshow> selectSlideshow(){
+        List<Slideshow> slideshowList= (List<Slideshow>) redisUtil.get(RedisConstant.SLIDESHOW_LIST);
+        if (slideshowList == null){
+            slideshowList = userService.selectSlideshow();
+            redisUtil.set(RedisConstant.SLIDESHOW_LIST,slideshowList);
+        }
+        return slideshowList;
+    }
+
     //新上课程
     @RequestMapping("/newteachwell")
     @ResponseBody
     public Map<String, Object> newteachwell(Integer page, Integer rows){
-
         Map<String, Object> map = userService.newteachwell(page, rows);
-
         return map;
     }
 
@@ -432,16 +421,38 @@ public class UserController {
     @RequestMapping("/popularcourses")
     @ResponseBody
     public Map<String, Object> popularcourses(Integer page, Integer rows){
-
         Map<String, Object> map = userService.popularcourses(page, rows);
-
         return map;
     }
 
-    @RequestMapping("/selectSlideshow")
+    @RequestMapping("/toXiangQing1")
     @ResponseBody
-    public List<Slideshow> selectSlideshow(){
-       return userService.selectSlideshow();
+    public ModelAndView toXiangQing1(Integer courseid){
+
+        ModelAndView mav = new ModelAndView();
+        CourseEntity course = userService.queryCourseList(courseid);
+        mav.addObject("course",course);//
+        // 传值
+        mav.setViewName("XiangQing1");//返回页面searchCourse2
+        return mav;
+    }
+
+    @RequestMapping("/selectCourseList")
+    @ResponseBody
+    public List<CourseEntity> selectCourseList(Integer courseid){
+
+        List<CourseEntity> list = userService.selectCourseList(courseid);
+
+        return list;
+    }
+
+    @RequestMapping("/toWatch")
+    public ModelAndView toWatch(String video){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("video",video);//
+        // 传值
+        mav.setViewName("watch");//返回页面
+        return mav;
     }
 
 }

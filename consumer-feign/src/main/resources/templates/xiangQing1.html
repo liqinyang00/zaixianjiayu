@@ -28,6 +28,11 @@
     <script src="../js/bootstrap-table/bootstrap-table.js"></script>
     <script src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
 
+    <script src="js/bootbox/bootbox.js"></script>
+    <link rel="stylesheet" href="js/bootstrap-table/bootstrap-table.css">
+    <script src="js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
     <!-- Document Title -->
     <meta charset="utf-8">
     <title>全部课程_IT培训精品课程-慕课网</title>
@@ -65,15 +70,14 @@
             text-decoration: none;
         }
         .kecheng ul{
-             width: 2000px;
-             height: 20px;
-             margin-left: 180px;
-         }
+            width: 2000px;
+            height: 20px;
+            margin-left: 180px;
+        }
         .nav li{
             display: none;
             width: 25%;
             text-decoration: none;
-
         }
         .nav li:hover{
             background-color: lightblue;
@@ -81,33 +85,16 @@
         section{
             height: 300px;
         }
-        /*.kecheng li{
-            list-style-type: none;
-            float: left;
-            line-height: 30px;
-            font-size: 16px;
-            color: #000000;
-            margin-right:50px;
-        }
-        .kecheng a:hover{
-            color: #000000;
-            text-decoration: none;
-        }*/
-
 
     </style>
 </head>
 <body>
 <div>
     <a href="#"><img src="/images/top22.jpg" style="width: 2000px" alt=""></a>
-
 </div>
-
-
 
 <div id="header">
     <div class="page-container clearfix" style="background-color: #0D171F !important;">
-
         <ul class=daohang>
             <li style="margin-top: 5px"><a href="/toMain">慕课网首页</a></li>
             <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">免费课程</a></li>
@@ -131,51 +118,110 @@
 </div>
 
 <!--导航栏部分HTML代码-->
-<nav id="nav" style="background-color: black">
+<nav id="nav" style="background-color: black;height: 70px">
      <ul>
-         <li class="act">课程介绍</li>
-         <li>课程章节</li>
-
+     <li class="act">课程介绍</li>
+     <li>课程章节</li>
      </ul>
 </nav>
 <!--内容部分HTML代码-->
 <div id="container">
     <section class="tab" >
-        <!--<img src="images/1587670312.jpg">-->
-        <input type="text" th:value="${course.coursetitle}" >
-        <table>
+        <!---->
+        <input type="hidden" id="courseid" th:value="${course.courseid}" >
+        <table width="800px">
             <tr>
-                <th th:value="${course.coursetitle}"></th>
+                <img src="images/xq1.png">
+                <img src="images/gwcFoot.jpg" width="100%">
             </tr>
         </table>
 
     </section>
     <section class="tab" >
 
-        7894656213321654564981561984hjvhjbvghcvvgycgh ghcgxg bcghc
+        <table id="coursetable"></table>
     </section>
-    <!--<div class="footer" style="margin-top: 110px;">
-        <img src="images/gwcFoot.jpg" width="100%">
-    </div>-->
-</div>
-
-<!--<div class="kecheng">
-    <div class="page-container clearfix" style="background-color: #fefff4 !important;">
-
-        <ul>
-            <li style="margin-top: 5px"><a href="/toMain">课程介绍</a></li>
-            <li style="margin-top: 5px"><a href="/toMianFeiKeCheng">课程章节</a></li>
-
-        </ul>
-    </div>
 
 </div>
-<div>
-    <img src="images/1587670312.jpg">
-</div>-->
-
 
 <script>
+
+    $(function(){
+        selectCourseList();
+    })
+
+    function selectCourseList(){
+
+        $("#coursetable").bootstrapTable({
+            url: "/selectCourseList?courseid="+$("#courseid").val(),
+            method: 'post',
+            striped: true,  	// 斑马线效果     默认false
+            //只允许选中一行
+            singleSelect: false,
+            //选中行是不选中复选框或者单选按钮
+            clickToSelect: true,
+            //showToggle: true,			//是否显示详细视图和列表视图的切换按钮
+            //cardView: false,			//是否显示详细视图
+            uniqueId: "courseid",				//每一行的唯一标识，一般为主键列
+            //showColumns: true,			//是否显示所有的列
+            //showRefresh: true,			//是否显示刷新按钮
+            minimumCountColumns: 2,		//  最少留两列
+            detailView: false,    		//是否显示父子表
+            toolbar: '#tabToolBar',		//  工具定义位置
+            sidePagination: 'client',	//前端分页还是后端分页
+            //toolbar: '#toolbar',
+            pagination: false, 			//是否展示分页
+            pageList: [2, 4, 8, 10],
+            //分页组件
+            pageNumber: 1,
+            pageSize: 8,				//默认每页条数
+            //启动回车键做搜索功能
+            searchOnEnterKey: true,
+            //设置为false 将禁止所有列的排序。
+            sortable: true,
+            //设置默认排序为 name,直接对应数据库的字段
+            sortName: 'courseid',
+            //定义排序方式，'asc' 或者 'desc'。
+            sortOrder: "asc",
+            //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+            // 设置为limit可以获取limit, offset, search, sort, order
+            queryParamsType: 'undefined',
+            columns: [
+                /* field 属性值和 对象的属性名保持一致 */
+                {field:'sectionname',title:'目录名称',width:$(this).width() * 0.2},
+                {field:'video',title:'视频',width:$(this).width() * 0.2,
+                    formatter:function(value,row,index){
+                        return "<video src='"+value+"' width='100px' height='100px'></video>&nbsp;&nbsp;&nbsp;&nbsp;" +
+                            "<a href='javascript:watch(&quot;"+value+"&quot;)'  class='btn btn-info' role='button'>点击观看</a>"
+                    }
+                },
+                {field:'duration',title:'时长',width:$(this).width() * 0.2}]
+        });
+    }
+
+    //弹框
+    var res;
+    function createAddContent(url) {
+        $.ajax({
+            url: url,
+            async: false,
+            success: function (data) {
+                res = data;
+            }
+        });
+        return res;
+    }
+
+    function watch(video){
+        //打开弹框
+        bootbox.dialog({
+
+            message: createAddContent("toWatch?video="+video),
+            closeButton: true,//是否显示关闭按钮
+            buttons: {
+            }
+        });
+    }
 
     window.onload=function () {
         //获取 li 也就是选项卡选项tab

@@ -15,11 +15,12 @@ public interface UserService {
 
     @RequestMapping("/success")
     @ResponseBody
-    UserModel Succ( @RequestParam("username") String username);
+    UserModel Succ(@RequestParam("username") String username);
 
     @RequestMapping("/reg")
     @ResponseBody
     UserModel reg(@RequestParam("username") String username);
+
     @RequestMapping("/reg1")
     @ResponseBody
     void addUser(UserModel user);
@@ -34,7 +35,7 @@ public interface UserService {
 
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
-    String selectCourseCourseid(@RequestParam Integer courseid,@RequestParam Integer userid);
+    String selectCourseCourseid(@RequestParam Integer courseid, @RequestParam Integer userid);
 
     @PostMapping("/delectShopping")
     @ResponseBody
@@ -42,7 +43,7 @@ public interface UserService {
 
     @PostMapping("/selectShopping")
     @ResponseBody
-    Map<String, Object> selectShopping(@RequestParam Integer page, @RequestParam Integer rows,@RequestParam Integer userid);
+    Map<String, Object> selectShopping(@RequestParam Integer page, @RequestParam Integer rows, @RequestParam Integer userid);
 
     @RequestMapping("/zhiFu")
     @ResponseBody
@@ -54,7 +55,7 @@ public interface UserService {
 
     @RequestMapping("/zhiFu2")
     @ResponseBody
-    void addOrder(@RequestParam String out_trade_no,@RequestParam Double total_amount,@RequestParam String subject,@RequestParam Integer userid);
+    void addOrder(@RequestParam String out_trade_no, @RequestParam Double total_amount, @RequestParam String subject, @RequestParam Integer userid);
 
     @PostMapping("/orderList")
     @ResponseBody
@@ -76,11 +77,19 @@ public interface UserService {
     @ResponseBody
     UserEntity userList(@RequestParam String username);
 
+    @RequestMapping("/newteachwell")
+    @ResponseBody
+    Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows);
+
+    @RequestMapping("/popularcourses")
+    @ResponseBody
+    Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows);
+
+    @RequestMapping("/selectCourseList")
+    @ResponseBody
+    List<CourseEntity> selectCourseList(@RequestParam Integer courseid);
+
     @RequestMapping("/toXiangQing1")
-    CourseEntity selectCourseList(Integer courseid);
-
-
-
-    /*@RequestMapping("/toShiZhanKeCheng")
-    List<TypeEntity> selectCourseType();*/
+    @ResponseBody
+    CourseEntity queryCourseList(@RequestParam Integer courseid);
 }

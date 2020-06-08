@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
 
-
     @Override
     public String hello() {
         return null;
@@ -34,19 +33,20 @@ public class UserServiceImpl implements UserService {
     @Override
     @RequestMapping("/success")
     @ResponseBody
-    public UserModel Succ( @RequestParam("username")  String username) {
+    public UserModel Succ(@RequestParam("username") String username) {
         return userMapper.Succ(username);
     }
 
     @Override
     @RequestMapping("/reg")
     @ResponseBody
-    public UserModel reg( @RequestParam("username") String username) {
+    public UserModel reg(@RequestParam("username") String username) {
         return userMapper.reg(username);
     }
+
     @RequestMapping("/reg1")
     @ResponseBody
-    public void addUser  (@RequestBody UserModel user) {
+    public void addUser(@RequestBody UserModel user) {
         userMapper.addUser(user);
     }
 
@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, Object> selectCourse(Integer page, Integer rows) {
         long coursetotal = userMapper.selectCourseCount();
-        List<CourseEntity> courseList = userMapper.selectCourse((page-1)*rows,rows);
-        Map<String,Object> dataMap = new HashMap<String,Object>();
+        List<CourseEntity> courseList = userMapper.selectCourse((page - 1) * rows, rows);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("total", coursetotal);
         dataMap.put("rows", courseList);
         return dataMap;
@@ -72,13 +72,13 @@ public class UserServiceImpl implements UserService {
     @PostMapping("/selectCourseCourseid")
     @ResponseBody
     @Override
-    public String selectCourseCourseid(Integer courseid,Integer userid) {
-        try{
-            CourseEntity courseEntities =  userMapper.selectCourseCourseid(courseid).get(0);
-            userMapper.addShopping(courseEntities,userid);
+    public String selectCourseCourseid(Integer courseid, Integer userid) {
+        try {
+            CourseEntity courseEntities = userMapper.selectCourseCourseid(courseid).get(0);
+            userMapper.addShopping(courseEntities, userid);
             userMapper.updateCourse(courseid);
-            return  "100";
-        }catch (Exception e){
+            return "100";
+        } catch (Exception e) {
             e.printStackTrace();
             return "500";
         }
@@ -164,16 +164,45 @@ public class UserServiceImpl implements UserService {
         return userMapper.userList(username);
     }
 
+    @RequestMapping("/newteachwell")
+    @ResponseBody
     @Override
-    public CourseEntity selectCourseList(Integer courseid) {
-        return null;
+    public Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+        long coursetotal = userMapper.newteachwellCount();
+        List<CourseEntity> courseList = userMapper.newteachwell((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
     }
 
-
-   /* @RequestMapping("/toShiZhanKeCheng")
+    @RequestMapping("/popularcourses")
+    @ResponseBody
     @Override
-    public List<TypeEntity> selectCourseType() {
+    public Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+        List<CourseEntity> list = userMapper.popularcoursesCount();
+        long coursetotal = list.size();
+        List<CourseEntity> courseList = userMapper.popularcourses((page-1)*rows,rows);
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("total", coursetotal);
+        dataMap.put("rows", courseList);
+        return dataMap;
+    }
 
-        return userMapper.selectCourseType();
-    }*/
+    @RequestMapping("/selectCourseList")
+    @ResponseBody
+    @Override
+    public List<CourseEntity> selectCourseList(@RequestParam Integer courseid) {
+
+        List<CourseEntity> list = userMapper.selectCourseList(courseid);
+
+        return list;
+    }
+
+    @RequestMapping("/toXiangQing1")
+    @ResponseBody
+    @Override
+    public CourseEntity queryCourseList(@RequestParam Integer courseid) {
+        return userMapper.queryCourseList(courseid);
+    }
 }

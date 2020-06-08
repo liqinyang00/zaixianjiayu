@@ -29,4 +29,10 @@ public class CourseEntity implements Serializable {
 
     private String name;
 
+    private String sectionname;
+
+    private String video;
+
+    private String duration;
+
 }

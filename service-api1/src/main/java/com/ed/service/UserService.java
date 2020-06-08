@@ -75,6 +75,9 @@ public interface UserService {
     @ResponseBody
     UserEntity userList(@RequestParam String username);
 
+    @RequestMapping("/toXiangQing1")
+    CourseEntity selectCourseList(Integer courseid);
+
 
 
     /*@RequestMapping("/toShiZhanKeCheng")

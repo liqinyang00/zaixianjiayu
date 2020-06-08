@@ -428,7 +428,7 @@ public class UserController {
             String result = alipayClient.pageExecute(alipayRequest).getBody();
             return result;
         }else{
-            return null;
+            return "未登录.....";
         }
 
     }

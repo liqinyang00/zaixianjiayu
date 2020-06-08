@@ -164,6 +164,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.userList(username);
     }
 
+    @Override
+    public CourseEntity selectCourseList(Integer courseid) {
+        return null;
+    }
+
 
    /* @RequestMapping("/toShiZhanKeCheng")
     @Override

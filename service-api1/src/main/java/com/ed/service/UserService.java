@@ -1,22 +1,5 @@
 package com.ed.service;
 
-
-import com.ed.model.User;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.ed.model.CourseEntity;
-import com.ed.model.Order;
-import com.ed.model.Slideshow;
-import com.ed.model.UserModel;
-
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.List;
-
 import com.ed.model.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +10,8 @@ import java.util.Map;
 @FeignClient("provider")
 public interface UserService {
 
-   /* @GetMapping("/")
-    @ResponseBody
-    List<User> text();*/
-
-   /* @RequestMapping("/")
+    @RequestMapping("/")
     String hello();
-    */
 
     @RequestMapping("/success")
     @ResponseBody
@@ -64,7 +42,7 @@ public interface UserService {
 
     @PostMapping("/selectShopping")
     @ResponseBody
-    Map<String, Object> selectShopping(@RequestParam Integer page,@RequestParam Integer rows);
+    Map<String, Object> selectShopping(@RequestParam Integer page, @RequestParam Integer rows,@RequestParam Integer userid);
 
     @RequestMapping("/zhiFu")
     @ResponseBody
@@ -90,14 +68,6 @@ public interface UserService {
     @ResponseBody
     List<CourseEntity> selectCourseType(@RequestParam String name);
 
-    @RequestMapping("/newteachwell")
-    @ResponseBody
-    Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows);
-
-    @RequestMapping("/popularcourses")
-    @ResponseBody
-    Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows);
-
     @RequestMapping("/selectSlideshow")
     @ResponseBody
     List<Slideshow> selectSlideshow();
@@ -105,6 +75,11 @@ public interface UserService {
     @RequestMapping("/userList")
     @ResponseBody
     UserEntity userList(@RequestParam String username);
+
+    @RequestMapping("/toXiangQing1")
+    CourseEntity selectCourseList(Integer courseid);
+
+
 
     /*@RequestMapping("/toShiZhanKeCheng")
     List<TypeEntity> selectCourseType();*/

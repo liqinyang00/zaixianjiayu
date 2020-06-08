@@ -17,6 +17,8 @@ public class ShoppingEntity implements Serializable {
 
     private Double shoppingcourseprice;
 
+    private Integer userid;
+
 
 
 }

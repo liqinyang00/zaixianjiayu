@@ -340,7 +340,7 @@ public class UserController {
         if(!StringUtils.isEmpty(course.getName())){
 
             List<CourseEntity> courseEntities = userService.selectCourseType(course.getName());
-            /* List<CourseEntity> courseEntities = userService.searchCourse(course);*/
+           /* List<CourseEntity> courseEntities = userService.searchCourse(course);*/
             return courseEntities;
         }else {
             return null;
@@ -441,7 +441,7 @@ public class UserController {
     @RequestMapping("/selectSlideshow")
     @ResponseBody
     public List<Slideshow> selectSlideshow(){
-        return userService.selectSlideshow();
+       return userService.selectSlideshow();
     }
 
 }

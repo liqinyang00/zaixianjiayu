@@ -1,60 +1,58 @@
 package com.ed.service;
 
 import com.ed.mapper.UserMapper;
+import com.ed.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 import com.ed.model.*;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
-@Controller
+@RestController
 public class UserServiceImpl implements UserService {
+
+    @Autowired
 
     @Resource
     private UserMapper userMapper;
 
-    /*@GetMapping("/")
-    @ResponseBody
+
+
     @Override
-    public List<User> text() {
-
-        return userMapper.text();
-    }*/
-
-
-    /*@Override
     public String hello() {
         return null;
-    }*/
+    }
 
+    @Override
     @RequestMapping("/success")
     @ResponseBody
-    @Override
-    public UserModel Succ(@RequestParam("username")  String username) {
+    public UserModel Succ( @RequestParam("username")  String username) {
         return userMapper.Succ(username);
     }
 
-
+    @Override
     @RequestMapping("/reg")
     @ResponseBody
-    @Override
     public UserModel reg( @RequestParam("username") String username) {
         return userMapper.reg(username);
     }
-
     @RequestMapping("/reg1")
     @ResponseBody
     public void addUser  (@RequestBody UserModel user) {
         userMapper.addUser(user);
     }
 
-
+    @Override
     @RequestMapping("/phoneLogin")
     @ResponseBody
-    @Override
     public UserModel fingName(@RequestParam String phone) {
         return userMapper.fingName(phone);
     }
@@ -78,6 +76,7 @@ public class UserServiceImpl implements UserService {
         try{
             CourseEntity courseEntities =  userMapper.selectCourseCourseid(courseid).get(0);
             userMapper.addShopping(courseEntities,userid);
+            userMapper.updateCourse(courseid);
             return  "100";
         }catch (Exception e){
             e.printStackTrace();
@@ -96,9 +95,9 @@ public class UserServiceImpl implements UserService {
     @PostMapping("/selectShopping")
     @ResponseBody
     @Override
-    public Map<String, Object> selectShopping(Integer page, Integer rows) {
+    public Map<String, Object> selectShopping(Integer page, Integer rows,Integer userid) {
         long shoppingtotal = userMapper.selectShoppingCount();
-        List<ShoppingEntity> shoppingList = userMapper.selectShopping((page-1)*rows,rows);
+        List<ShoppingEntity> shoppingList = userMapper.selectShopping((page-1)*rows,rows,userid);
         Map<String,Object> dataMap = new HashMap<String,Object>();
         dataMap.put("total", shoppingtotal);
         dataMap.put("rows", shoppingList);
@@ -165,35 +164,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.userList(username);
     }
 
-    @RequestMapping("/newteachwell")
-    @ResponseBody
     @Override
-    public Map<String, Object> newteachwell(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
-
-        long coursetotal = userMapper.newteachwellCount();
-        List<CourseEntity> courseList = userMapper.newteachwell((page-1)*rows,rows);
-        Map<String,Object> dataMap = new HashMap<String,Object>();
-        dataMap.put("total", coursetotal);
-        dataMap.put("rows", courseList);
-        return dataMap;
+    public CourseEntity selectCourseList(Integer courseid) {
+        return null;
     }
 
-    @RequestMapping("/popularcourses")
-    @ResponseBody
-    @Override
-    public Map<String, Object> popularcourses(@RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
-
-        List<CourseEntity> list = userMapper.popularcoursesCount();
-
-        long coursetotal = list.size();
-
-
-        List<CourseEntity> courseList = userMapper.popularcourses((page-1)*rows,rows);
-        Map<String,Object> dataMap = new HashMap<String,Object>();
-        dataMap.put("total", coursetotal);
-        dataMap.put("rows", courseList);
-        return dataMap;
-    }
 
    /* @RequestMapping("/toShiZhanKeCheng")
     @Override

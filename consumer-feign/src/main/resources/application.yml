@@ -2,6 +2,12 @@ server:
   port: 8070
 
 spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      cluster-name: elasticsearch
+      cluster-nodes: localhost:9300
   application:
     name: consumer-fegin
 
@@ -22,6 +28,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:8090/eureka
+
 ribbon:
   eureka:
     enabled: true

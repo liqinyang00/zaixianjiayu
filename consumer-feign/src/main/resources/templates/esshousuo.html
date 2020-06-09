@@ -29,16 +29,16 @@
     <meta charset="utf-8">
     <title>实战课程_开发项目实战_编程项目实战-慕课网</title>
     <style type="text/css">
-        em {
-            font-style: normal;
-            color: #c00;
-        }
         #header .page-container {
             width: auto;
             padding-right: 10px;
             z-index: 900;
             box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
             position: relative;
+        }
+        em {
+            font-style: normal;
+            color: red;
         }
         ul{
             width: 2000px;
@@ -239,12 +239,70 @@
 </div>
 <br/><br/>
 <div class="daohangye">
-    <span id="daohangye"></span>
-</div>
+    <tr th:each="course : ${list}">
 
+     <td><div class="col-sm-6 col-md-3 list-item">
+    <div class="thumbnail" style="height: 440px">
+        <a href="/toXiangQing2"><img th:src="${course.courseimg}" width="100px" height="100px"></a>
+        <div class="caption">
+            <h4><b class="shizan-name">
+                <span th:utext="${course.coursetitle}"></span></b></h4>
+
+            <p>收藏人数：<span th:text="${course.coursenumber}"></span><!--'+data.rows[i].coursenumber+'--></p>
+            <p><span th:text="${course.coursecontext}"></span><!--'+data.rows[i].coursecontext+'--></p>
+            <p>作者：<span th:text="${course.authername}"></span></p>
+            <p style="color: red"><span th:text="${course.courseprice}"></span><!--￥'+data.rows[i].courseprice+'--></p>
+            <p>
+                <a th:href="@{/zhiFu(courseid = ${course.courseid})}" class="btn btn-warning">购&nbsp买</a> |
+                <a th:href="@{/delId(courseid = ${course.courseid})}" class="btn btn-warning">加入购物车</a>
+
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</td>
+</tr>
 <div class="footer" style="margin-top: 100px;">
     <img src="images/gwcFoot.jpg" width="100%">
 </div>
+
+<!--<table>
+    <tr th:each="course : ${list}">
+    &lt;!&ndash;<div class="col-sm-6 col-md-3 list-item">
+        <div class="thumbnail" style="height: 440px">
+            <a href="/toXiangQing2"><img src='+data.rows[i].courseimg+' width="100px" height="100px"></a>
+            <div class="caption">&ndash;&gt;
+                    <td th:text="${course.coursetitle}"></td>
+                    收藏人数：<td th:text="${course.coursenumber}"></td>
+                    <td th:text="${course.coursecontext}"></td>
+                    <td th:text="${course.authername}"></td>     &lt;!&ndash;<p>作者：'+data.rows[i].authername+'</p>&ndash;&gt;
+                    <td th:text="${course.courseprice}"></td>   &lt;!&ndash; <p style="color: red">￥'+data.rows[i].courseprice+'</p>&ndash;&gt;
+                    <td >
+
+                        <a href="javascript:zhiFu()" class="btn btn-primary" style="background: #f03b35;color: #fff" role="button">购&nbsp;买</a>
+
+                        <a href="javascript:editCourse()" style="background: #f27d78;color: #fff" class="btn btn-default" role="button">加入购物车</a>
+                    </td>
+                        &lt;!&ndash;<p>
+                            <a href="javascript:zhiFu('+data.rows[i].courseid+')" class="btn btn-primary" style="background: #f03b35;color: #fff" role="button">购&nbsp;买</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="javascript:editCourse('+data.rows[i].courseid+')" style="background: #f27d78;color: #fff" class="btn btn-default" role="button">加入购物车</a>
+                        </p>&ndash;&gt;
+            &lt;!&ndash;  </div>
+            </div>
+        </div>&ndash;&gt;
+
+        <td th:text="${course.courseid}"></td>
+    </tr>
+
+</table>
+
+
+<div class="footer" style="margin-top: 100px;">
+    <img src="images/gwcFoot.jpg" width="100%">
+</div>-->
 
 </body>
 
@@ -292,21 +350,21 @@
                     dh+='</div>';
                     dh+='</div>';
                 }
-                $("#daohangye").html(dh);
+              /*  $("#daohangye").html(dh);*/
             }
 
         });
     }
 
     function editCourse(courseid){
-
+alert(courseid);
         $.ajax({
             type:"post",
             url:"../selectCourseCourseid",
             data:{courseid:courseid},
             dataType:"json",
             success:function(data) {
-                 alert("加入购物车成功")
+                alert("加入购物车成功")
                 location.href=location;
             },
             error:function(){
@@ -316,6 +374,7 @@
     }
 
     function zhiFu(courseid){
+        alert("zh +courseid");
         window.location.href="../zhiFu?courseid="+courseid;
 
     }

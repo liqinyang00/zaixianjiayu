@@ -92,4 +92,8 @@ public interface UserService {
     @RequestMapping("/toXiangQing1")
     @ResponseBody
     CourseEntity queryCourseList(@RequestParam Integer courseid);
+
+    @RequestMapping("/souSuo")
+    @ResponseBody
+    List<CourseEntity> souSuo(@RequestParam String titleName);
 }

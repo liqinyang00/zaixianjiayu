@@ -8,9 +8,7 @@ import com.ed.common.CommonConf;
 import com.ed.service.UserService;
 
 import com.ed.model.*;
-import com.ed.util.CheckImgUtil;
-import com.ed.util.CheckSumBuilder;
-import com.ed.util.HttpClientUtil;
+import com.ed.util.*;
 import com.ed.utils.AlipayConfig;
 import com.ed.utils.RedisConstant;
 import com.ed.utils.RedisUtil;
@@ -453,6 +451,28 @@ public class UserController {
         // 传值
         mav.setViewName("watch");//返回页面
         return mav;
+    }
+
+    @RequestMapping("/souSuo")
+    @ResponseBody
+    public ModelAndView souSuo(@RequestParam String titleName){
+
+        List<CourseEntity>  list = userService.souSuo(titleName);
+
+
+       /* Integer pageNumber = paramsUtil.getPageNumber();
+        Integer pageSize = paramsUtil.getPageSize();
+        DataGridResult dgr = new DataGridResult();
+        new PageUtil()*/
+
+       ModelAndView mav = new ModelAndView();
+
+       mav.addObject("list",list);
+       mav.setViewName("esshousuo");
+
+
+        return mav;
+
     }
 
 }
